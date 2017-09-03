@@ -16,7 +16,20 @@
 
 ## 版本历史
 * 0.5.0 - 2017.09.03 工程初始化，参考Apache Geode的1.2版本文档
+
 ## 目录
+
+
+##常见术语
+
+| English | 含义 |
+| ------- | ---- |
+|JVM|Java虚拟机|Java Virtual Machine|
+|JDK|Java Development Kit|
+|GC|Garbage Collector/Garbage Collect JVM中的垃圾回收||Locator|注册客户端和服务器成员，使双方能够互相发现，同时可以提供一定的负载均衡功能||Server Cache，Cache Server|GemFire分布式系统的服务器节点。||Node，Member|均为GemFire集群的节点||Client Cache|接入到GemFire分布式系统的客户端，负责管理本地缓存的生命周期||Region|Region是一个分布式系统之上的抽象概念。一个Region允许你在系统的多个VM中存储数据，不用考虑数据存在那个对等体上。Region提供了一个map接口能透明地从合适的VM上获取数据。这个Region类扩展了java.util.Map接口，但是它也支持查询和事务。|
+|Replicated Region|一个Replicated Region保存着所有分区的数据拷贝||Partitioned Region|Partitioned Regions只保存一部分分区的数据拷贝||GFSH |GemFire Shell，用于管理和监控GemFire的脚本|
+|Redundant|复制，在GemFire中，副本的数量范围为0-3个||Primary|主数据|
+|Secondary|从数据|
 
 ## 参与者（按认领章节排序）
 
