@@ -3,7 +3,6 @@
 [<img src="https://geode.apache.org/img/apache_geode_logo.png" align="center"/>](http://geode.apache.org)
 
 
-Chinese edition of Apache Geode(v1.2) docs (http://geode.apache.org/docs/guide/12/about_geode.html)
 ## 说明
 * 翻译自[Apache Geode](https://geode.apache.org/)的[官方文档](http://geode.apache.org/docs/guide/12/about_geode.html)
 
