@@ -1,5 +1,5 @@
 ---
-title:  About Apache Geode
+title:  关于 Apache Geode
 ---
 
 <!--
@@ -19,19 +19,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Apache Geode is a data management platform that provides real-time, consistent access to data-intensive applications throughout widely distributed cloud architectures.
+Apache Geode 是一个数据管理平台， 遍布广泛分布的云架构， 针对数据关键型应用，提供了实时，一致的访问机制
 
 <a id="concept_3B5E445B19884680900161BDF25E32C9__section_itx_b41_mr"></a>
-Geode pools memory, CPU, network resources, and optionally local disk across multiple processes to manage application objects and behavior. It uses dynamic replication and data partitioning techniques to implement high availability, improved performance, scalability, and fault tolerance. In addition to being a distributed data container, Geode is an in-memory data management system that provides reliable asynchronous event notifications and guaranteed message delivery.
+Geode 池化了服务器上的内存, CPU, 网络资源和本地磁盘，跨多个进程来管理应用对象和应用行为. 它使用了动态数据复制和分区技术来实现高可用, 高性能, 高可扩展性和容错机制. 另外, 对于一个分布式数据容器, Apache Geode 是一个基于内存的数据管理系统, 提供了可靠的异步事件通知和可靠的消息投递.
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_0031B81824874FC18F0828DB66150833" class="no-quick-link"></a>Main Concepts and Components
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_0031B81824874FC18F0828DB66150833" class="no-quick-link"></a>主要概念和模块
 
-*Caches* are an abstraction that describe a node in a Geode distributed system. Application architects can arrange these nodes in peer-to-peer or client/server topologies.
+*Caches* 是一个抽象的概念, 用于在一个 Geode 分布式系统中用于描述一个节点。  应用架构师可以通过peer-to-peer或client/server拓扑架构来排布这些节点。
 
-Within each cache, you define data *regions*. Data regions are analogous to tables in a relational database and manage data in a distributed fashion as name/value pairs. A *replicated* region stores identical copies of the data on each cache member of a distributed system. A *partitioned* region spreads the data among cache members. After the system is configured, client applications can access the distributed data in regions without knowledge of the underlying system architecture. You can define listeners to create notifications about when data has changed, and you can define expiration criteria to delete obsolete data in a region.
+在每一个cache 中, 你可以定义 *data regions*. Data regions 类似于传统关系型数据库中的'表'（table）的概念, 以分布式的方式来管理数据 , 表现为Key/Value对的形式. 一个 *replicated region*  保存相同的数据拷贝在分布式系统的每个Cache成员上。 一个 *partitioned region* 则在cache成员间传播数据。 在系统配置后, 客户端应用能够访问regions 中的分布式数据， 而不需要知道系统整体架构。你能够定义监听器（listeners）来接收数据发生变化时的通知, 同时你也能够定义超时标准来删除在一个 region 中的需要废弃掉的数据。
 
-For large production systems, Geode provides *locators*. Locators provide both discovery and load balancing services. You configure clients with a list of locator services and the locators maintain a dynamic list of member servers. By default, Geode clients and servers use port 40404 to discover each other.
+在一个大型生产环境系统中， Geode提供*locators*节点。Locators提供了节点发现和负载均衡服务。你可以通过在客户端配置带有 locator服务列表, 同时 locators 维护一个成员服务器的动态列表. 默认情况下, Geode 客户端和服务器使用端口 40404 来进行互相发现.
 
 <a id="concept_3B5E445B19884680900161BDF25E32C9__section_zrl_c41_mr"></a>
 
-For more information on product features, see [Main Features of Apache Geode](product_intro.html).
+关于Geode的更多产品功能的信息， 请参考[Apache Geode的主要功能](product_intro.html).

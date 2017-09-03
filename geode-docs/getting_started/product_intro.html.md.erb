@@ -1,5 +1,5 @@
 ---
-title:  Main Features
+title:  主要功能
 ---
 
 <!--
@@ -21,43 +21,42 @@ limitations under the License.
 
 This section summarizes main features and key functionality.
 
--   [High Read-and-Write Throughput](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_CF0E3E5C4F884374B8F2F536DD2A375C)
--   [Low and Predictable Latency](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_9C5D669B583646F1B817284EB494DDA7)
--   [High Scalability](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_EF7A73D35D1241289C9CA19EDDEBE959)
--   [Continuous Availability](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_CEB4ABFF83054AF6A47EA2FA09C240B1)
--   [Reliable Event Notifications](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_86D2B8CC346349F3913209AF87648A02)
--   [Parallelized Application Behavior on Data Stores](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_A65B5F0DE8BF4AA6AFF16E3A75D4E0AD)
--   [Shared-Nothing Disk Persistence](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_97CABBFF553647F6BBBC40AA7AF6D4C7)
--   [Reduced Cost of Ownership](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FCB2640F1BED4692A93F9300A41CE70D)
--   [Single-Hop Capability for Client/Server](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7)
--   [Client/Server Security](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_577F601BC9854AA6B53CD3440F9B9A6A)
--   [Multisite Data Distribution](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612)
--   [Continuous Querying](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321)
--   [Heterogeneous Data Sharing](product_intro.html#mainfeatures_heterogeneousdatasharing)
+-   [高吞读读写](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_CF0E3E5C4F884374B8F2F536DD2A375C)
+-   [可预计的低延时](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_9C5D669B583646F1B817284EB494DDA7)
+-   [高延展性](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_EF7A73D35D1241289C9CA19EDDEBE959)
+-   [持续可靠性](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_CEB4ABFF83054AF6A47EA2FA09C240B1)
+-   [可靠的事件通知](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_86D2B8CC346349F3913209AF87648A02)
+-   [基于数据存储的并行应用操作](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_A65B5F0DE8BF4AA6AFF16E3A75D4E0AD)
+-   [Shared-Nothing的磁盘持久化](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_97CABBFF553647F6BBBC40AA7AF6D4C7)
+-   [减少拥有成本](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FCB2640F1BED4692A93F9300A41CE70D)
+-   [Client/Server中的单跳(Single-Hop)机制](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7)
+-   [Client/Server中的安全机制](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_577F601BC9854AA6B53CD3440F9B9A6A)
+-   [多站点数据分发](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612)
+-   [持续查询（Continuous Querying）](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321)
+-   [跨编程语言数据共享](product_intro.html#mainfeatures_heterogeneousdatasharing)
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_CF0E3E5C4F884374B8F2F536DD2A375C" class="no-quick-link"></a>High Read-and-Write Throughput
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_CF0E3E5C4F884374B8F2F536DD2A375C" class="no-quick-link"></a>高吞吐读写
 
-Read-and-write throughput is provided by concurrent main-memory data structures and a highly optimized distribution infrastructure. Applications can make copies of data dynamically in memory through synchronous or asynchronous replication for high read throughput or partition the data across many system members to achieve high read-and-write throughput. Data partitioning doubles the aggregate throughput if the data access is fairly balanced across the entire data set. Linear increase in throughput is limited only by the backbone network capacity.
+通过并行内存架构和高度优化的分布式基础架构提供读写吞吐。为了获得高吞吐读写，应用可以创建数据的动态副本， 通过针对读的高吞吐进行同步和异步复制，或者通过在许多系统成员上分区数据。 如果数据的访问在整个数据集合上基本平衡的话， 数据分区可以加倍总吞吐。吞吐的线性增加只会被网络带宽所限制。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_9C5D669B583646F1B817284EB494DDA7" class="no-quick-link"></a>Low and Predictable Latency
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_9C5D669B583646F1B817284EB494DDA7" class="no-quick-link"></a>可预计的低延时
 
-The optimized caching layer minimizes context switches between threads and processes. It manages data in highly concurrent structures to minimize contention points. Communication to peer members is synchronous if the receivers can keep up, which keeps the latency for data distribution to a minimum. Servers manage object graphs in serialized form to reduce the strain on the garbage collector.
+优化的缓存层把在进程之间和线程之间的上下文切换减少到了最小程度。通过在一个高分布的架构中最小化数据争抢的方式，管理数据。如果接收端可以跟上的话， 对等成员之间的通信是同步的， 这样会保证数据分发的延迟始终最小。为了减少GC（garbage collector）的压力，服务器以序列化的格式管理对象图。
 
-Subscription management (interest registration and continuous queries) is partitioned across server data stores, ensuring that a subscription is processed only once for all interested clients. The resulting improvements in CPU use and bandwidth utilization improve throughput and reduce latency for client subscriptions.
+为了保证一个订阅针对所有订阅的客户端只分发一次， 订阅管理 (注册兴趣interest registration 和 持续查询continuous queries) 在整个服务器的数据存储中分区管理。 这样的机制改进了CPU的利用率和带宽的利用率， 从而增加了吞吐，也减少了客户端订阅的延迟。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_EF7A73D35D1241289C9CA19EDDEBE959" class="no-quick-link"></a>High Scalability
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_EF7A73D35D1241289C9CA19EDDEBE959" class="no-quick-link"></a>高延展性
 
-Scalability is achieved through dynamic partitioning of data across many members and spreading the data load uniformly across the servers. For "hot" data, you can configure the system to expand dynamically to create more copies of the data. You can also provision application behavior to run in a distributed manner in close proximity to the data it needs.
+通过在很多成员上的数据动态分区和将数据负载均匀地传播到服务器上， 获得了延展性。针对“热”数据，你可以通过配置让数据创建更多的副本以获得动态展开。 你也可以以分布式方式运行一个应用的操作， 让它靠近所需要的数据。
 
-If you need to support high and unpredictable bursts of concurrent client load, you can increase the number of servers managing the data and distribute the data and behavior across them to provide uniform and predictable response times. Clients are continuously load balanced to the server farm based on continuous feedback from the servers on their load conditions. With data partitioned and replicated across servers, clients can dynamically move to different servers to uniformly load the servers and deliver the best response times.
+如果你需要支持高且不可预测的客户端并发，你可以增加管理数据的服务器数量，同时在更多的服务器之间分发数据和相关的操作， 来获得低且可预测的响应时间。 基于各个服务器的负载情况，客户端的负载会被持续的均衡到服务器上。通过在服务器间的数据分区或者复制，客户端连接可以动态的移动到不同的服务器上，保证服务器获得据云的负载，客户端获得最好的响应时间。
 
-You can also improve scalability by implementing asynchronous "write behind" of data changes to external data stores, like a database. This avoids a bottleneck by queuing all updates in order and redundantly. You can also conflate updates and propagate them in batch to the database.
+你也可以通过应用异步的“后写”（write behind）把数据改变写到外部数据存储（例如数据库）上， 获得更高的延展性。这可以避免把所有更新按照顺序和冗余的方式放入队列的瓶颈。你也可以压缩更新事件，或者通过批量的方式把他们存入数据库。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_CEB4ABFF83054AF6A47EA2FA09C240B1" class="no-quick-link"></a>Continuous Availability
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_CEB4ABFF83054AF6A47EA2FA09C240B1" class="no-quick-link"></a>持续可靠性
 
-In addition to guaranteed consistent copies of data in memory, applications can persist data to disk on one or more members synchronously or asynchronously by using a "shared nothing disk architecture." All asynchronous events (store-forward events) are redundantly managed in at least two members such that if one server fails, the redundant one takes over. All clients connect to logical servers, and the client fails over automatically to alternate servers in a group during failures or when servers become unresponsive.
-
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_86D2B8CC346349F3913209AF87648A02" class="no-quick-link"></a>Reliable Event Notifications
+除了在内存中保证一致的数据副本，应用可以通过“shared nothing 磁盘架构”，以同步或者异步的方式， 在一个或多个成员上进行数据的持久化。所有的异步事件（存储转发事件）都会至少在两个成员上进行冗余副本管理， 这样如果一个服务器宕机， 则另一个服务器会进行接管。所有的客户端连接到逻辑服务器上， 如果服务器宕机或者服务器不响应，客户端连接则会自动连接到其他服务器上。
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_86D2B8CC346349F3913209AF87648A02" class="no-quick-link"></a>可靠的事件通知
 
 Publish/subscribe systems offer a data-distribution service where new events are published into the system and routed to all interested subscribers in a reliable manner. Traditional messaging platforms focus on message delivery, but often the receiving applications need access to related data before they can process the event. This requires them to access a standard database when the event is delivered, limiting the subscriber by the speed of the database.
 
@@ -89,25 +88,16 @@ Clients can send individual data requests directly to the server holding the dat
 
 There may be multiple, distinct users in client applications. This feature accommodates installations in which clients are embedded in application servers and each application server supports data requests from many users. Each user may be authorized to access a small subset of data on the servers, as in a customer application where each customer can access only their own orders and shipments. Each user in the client connects to the server with its own set of credentials and has its own access authorization to the server cache.
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612" class="no-quick-link"></a>Multisite Data Distribution
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612" class="no-quick-link"></a>多站点数据分发
 
 Scalability problems can result from data sites being spread out geographically across a wide-area network (WAN). Models address these topologies, ranging from a single peer-to-peer cluster to reliable communications between data centers across the WAN. This model allows distributed systems to scale out in an unbounded and loosely coupled fashion without loss of performance, reliability or data consistency.
 
 At the core of this architecture is the gateway sender configuration used for distributing region events to a remote site. You can deploy gateway sender instances in parallel, which enables an increase in throughput for distributing region events across the WAN. You can also configure gateway sender queues for persistence and high availability to avoid data loss in the case of a member failure.
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321" class="no-quick-link"></a>Continuous Querying
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321" class="no-quick-link"></a>持续查询
 
-In messaging systems like Java Message Service, clients subscribe to topics and queues. Any message delivered to a topic is sent to the subscriber. Geode allows continuous querying by having applications express complex interest using Object Query Language.
+在一个类似JMS（Java Message Service）的消息系统中， 客户端订阅主题（topics）和队列（queues）。任何消息会通过主题分发给订阅者。通过应用使用OQL（Object Query Language）进行比较复杂的兴趣注册， Geode支持持续查询.
 
-## <a id="mainfeatures_heterogeneousdatasharing" class="no-quick-link"></a>Heterogeneous Data Sharing
+## <a id="mainfeatures_heterogeneousdatasharing" class="no-quick-link"></a>跨编程语言数据共享
 
-C#, C++ and Java applications can share application business objects 
-without going through a transformation layer such as SOAP or XML.
-The server side behavior, though implemented in Java,
-provides a unique native cache for C++ and .NET applications.
-Application objects can be managed in the C++ process heap and 
-distributed to other processes using a common “on-the-wire” representation
-for objects.
-A C++ serialized object can be directly deserialized as an equivalent Java 
-or C# object.
-A change to a business object in one language can trigger reliable notifications in applications written in the other supported languages.
+不需要一个类似SOAP 或 XML的数据转化层， C#, C++ 和 Java 应用就可以分享应用业务对象。通过JAVA实现的服务器端操作，提供了一个针对 C++ 和 .NET应用的唯一的本机缓存。应用程序对象可以在C ++进程堆中进行管理，并使用对象的通用“在线”表示分发给其他进程。一个C++序列化的对象可以直接被反序列化成一个对等的Java或者C#对象。在一个编程语言中的一个业务对象上的变化， 可以向其他支持的编程语言编写的应用激发一个可靠的通知。
