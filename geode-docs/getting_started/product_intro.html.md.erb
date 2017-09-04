@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-This section summarizes main features and key functionality.
+这个章节罗列了主要功能特性和关键功能点。
 
 -   [高吞读读写](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_CF0E3E5C4F884374B8F2F536DD2A375C)
 -   [可预计的低延时](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_9C5D669B583646F1B817284EB494DDA7)
@@ -29,7 +29,7 @@ This section summarizes main features and key functionality.
 -   [基于数据存储的并行应用操作](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_A65B5F0DE8BF4AA6AFF16E3A75D4E0AD)
 -   [Shared-Nothing的磁盘持久化](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_97CABBFF553647F6BBBC40AA7AF6D4C7)
 -   [减少拥有成本](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FCB2640F1BED4692A93F9300A41CE70D)
--   [Client/Server中的单跳(Single-Hop)机制](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7)
+-   [Client/Server间的单跳(Single-Hop)机制](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7)
 -   [Client/Server中的安全机制](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_577F601BC9854AA6B53CD3440F9B9A6A)
 -   [多站点数据分发](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612)
 -   [持续查询（Continuous Querying）](product_intro.html#concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321)
@@ -58,45 +58,47 @@ This section summarizes main features and key functionality.
 除了在内存中保证一致的数据副本，应用可以通过“shared nothing 磁盘架构”，以同步或者异步的方式， 在一个或多个成员上进行数据的持久化。所有的异步事件（存储转发事件）都会至少在两个成员上进行冗余副本管理， 这样如果一个服务器宕机， 则另一个服务器会进行接管。所有的客户端连接到逻辑服务器上， 如果服务器宕机或者服务器不响应，客户端连接则会自动连接到其他服务器上。
 ## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_86D2B8CC346349F3913209AF87648A02" class="no-quick-link"></a>可靠的事件通知
 
-Publish/subscribe systems offer a data-distribution service where new events are published into the system and routed to all interested subscribers in a reliable manner. Traditional messaging platforms focus on message delivery, but often the receiving applications need access to related data before they can process the event. This requires them to access a standard database when the event is delivered, limiting the subscriber by the speed of the database.
+发布/订阅系统提供了一个数据分发服务， 以稳定的方式， 新的事件可以发布给系统，然后传输给所有感兴趣的订阅者。传统的信息平台关注于消息分发， 但是经常导致接收应用需要在处理事件之前去访问相关数据。这要求接收应用在接受到一个事件的时候去访问一个标准的数据库， 这样就会导致订阅会被数据库的速度限制。
 
-Data and events are offered through a single system. Data is managed as objects in one or more distributed data regions, similar to tables in a database. Applications simply insert, update, or delete objects in data regions, and the platform delivers the object changes to the subscribers. The subscriber receiving the event has direct access to the related data in local memory or can fetch the data from one of the other members through a single hop.
+数据和事件通过同一个系统被访问。数据以对象的方式保存在一个或多个分布式数据Region中， Region类似于数据库中的表。应用可以简单的插入，更新，删除数据Region中的对象， 而由平台向订阅者来传播数据变化的事件。 订阅者接收事件的同时， 就可以直接访问在本机内存中关联的数据， 或者通过单跳（single hop）直接从其他的一个成员上取得数据。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_A65B5F0DE8BF4AA6AFF16E3A75D4E0AD" class="no-quick-link"></a>Parallelized Application Behavior on Data Stores
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_A65B5F0DE8BF4AA6AFF16E3A75D4E0AD" class="no-quick-link"></a>基于数据存储的并行应用操作
+你可以在成员上并行的执行应用的业务逻辑。这样的数据依赖function执行服务允许直接执行， 在各个成员上的数据依赖应用Function可以根据各个节点上的数据分区情况和延展情况来执行。
 
-You can execute application business logic in parallel on members. The data-aware function-execution service permits execution of arbitrary, data-dependent application functions on the members where the data is partitioned for locality of reference and scale.
+通过共协（Colocating）关联数据和并行化计算， 可以提高总体吞吐量。计算的延迟与加入计算的节点数量成反比。
 
-By colocating the relevant data and parallelizing the calculation, you increase overall throughput. The calculation latency is inversely proportional to the number of members on which it can be parallelized.
+这样的基础设定保证了对于应用来说Function是透明的，可以直接贴近需要参与计算的数据子集， 避免了在网络上把数据的来回移动。应用Function可以只在一个成员上执行， 也可以在一部分成员上执行，甚至也可以在所有的成员上执行。这个变成模型类似于大家比较熟悉的Map-Reduce模型。数据依赖Function比较适合需要应用逻辑遍历很多条数据的情况（类似于查询或者自定义的聚合功能）。
 
-The fundamental premise is to route the function transparently to the application that carries the data subset required by the function and to avoid moving data around on the network. Application function can be executed on only one member, in parallel on a subset of members, or in parallel across all members. This programming model is similar to the popular Map-Reduce model from Google. Data-aware function routing is most appropriate for applications that require iteration over multiple data items (such as a query or custom aggregation function).
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_97CABBFF553647F6BBBC40AA7AF6D4C7" class="no-quick-link"></a>Shared-Nothing Disk Persistence
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_97CABBFF553647F6BBBC40AA7AF6D4C7" class="no-quick-link"></a>Shared-Nothing的磁盘持久化
 
-Each distributed system member manages data on disk files independent of other members. Failures in disks or cache failures in one member do not affect the ability of another cache instance to operate safely on its disk files. This "shared nothing" persistence architecture allows applications to be configured such that different classes of data are persisted on different members across the system, dramatically increasing the overall throughput of the application even when disk persistence is configured for application objects.
+每个分布式系统成员，在自己的磁盘上，独立的管理数据。在一个成员上的磁盘或者缓存的错误，不会影响另一个缓存实例在其磁盘文件上安全运行的能力。 这样的"shared nothing"持久性体系结构， 允许配置应用程序，使得不同类别的数据在整个系统上的不同成员上持久化，即使为应用程序对象配置了磁盘持久化，也会大大增加了应用程序的总体吞吐量。
 
-Unlike a traditional database system, separate files are not used to manage data and transaction logs. All data updates are appended to files that are similar to transactional logs of traditional databases. You can avoid disk-seek times if the disk is not concurrently used by other processes, and the only cost incurred is the rotational latency.
+不像传统的数据系统， 分隔文件不用于管理数据和事务日志。类似于在传统数据库中事务日志， 所有数据的更新都附加到文件后端。
+如果磁盘不被其他进程同时使用，则可以避免磁盘寻道时间， 并且唯一的成本是磁盘旋转延迟。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_FCB2640F1BED4692A93F9300A41CE70D" class="no-quick-link"></a>Reduced Cost of Ownership
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_FCB2640F1BED4692A93F9300A41CE70D" class="no-quick-link"></a>减少拥有成本
 
-You can configure caching in tiers. The client application process can host a cache locally (in memory and overflow to disk) and delegate to a cache server farm on misses. Even a 30 percent hit ratio on the local cache translates to significant savings in costs. The total cost associated with every single transaction comes from the CPU cycles spent, the network cost, the access to the database, and intangible costs associated with database maintenance. By managing the data as application objects, you avoid the additional cost (CPU cycles) associated with mapping SQL rows to objects.
+可以配置缓存层。客户端应用进程可以部署一个本地缓存（在内存中且溢出到磁盘上）， 在miss的情况下去查询服务器端缓存集群。即使本地缓存只有30%的命中率， 也会显著的节约成本。总体成本与每个事务对CPU计算周期的占用， 网络占用，数据库的访问，甚至是不容易计算的数据库运维成本有关。通过按照业务对象的方式管理数据， 可以避免类似于把SQL记录转换成对象这样不必要的成本（占用CPU计算周期）。
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7" class="no-quick-link"></a>Single-Hop Capability for Client/Server
 
-Clients can send individual data requests directly to the server holding the data key, avoiding multiple hops to locate data that is partitioned. Metadata in the client identifies the correct server. This feature improves performance and client access to partitioned regions in the server tier.
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_92A444D4B422434EBD5F81D11F32C1C7" class="no-quick-link"></a>Client/Server间的单跳(Single-Hop)机制
 
-## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_577F601BC9854AA6B53CD3440F9B9A6A" class="no-quick-link"></a>Client/Server Security
+客户端可以发送单独的数据请求，直接连到具有这个数据Key的服务器上， 这样就避免了为了定位分区数据而在成员间进行多次跳跃。在客户端的元数据（Metadata）可以找到正确的服务器。这个功能改进了客户端访问在服务器层partitioned regions的性能。
 
-There may be multiple, distinct users in client applications. This feature accommodates installations in which clients are embedded in application servers and each application server supports data requests from many users. Each user may be authorized to access a small subset of data on the servers, as in a customer application where each customer can access only their own orders and shipments. Each user in the client connects to the server with its own set of credentials and has its own access authorization to the server cache.
+## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_577F601BC9854AA6B53CD3440F9B9A6A" class="no-quick-link"></a>Client/Server 安全
+
+客户端应用可能会由多个不同用户。这个功能可以支持这样的安装方式， 即在客户端嵌入到应用服务器中， 每一个应用服务器支持大量用户的数据请求。每个用户都被授权只能访问服务器上全部数据的一个子集， 类似于在一个客户系统中每个客户都只能访问子集的订单和送货信息。在客户端的每一个用户通过子集的认证信息连接到服务器， 通过这个认证信息获得授权来访问服务器端缓存。
 
 ## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_091A306900D7402CAE5A46B5F9BFD612" class="no-quick-link"></a>多站点数据分发
 
-Scalability problems can result from data sites being spread out geographically across a wide-area network (WAN). Models address these topologies, ranging from a single peer-to-peer cluster to reliable communications between data centers across the WAN. This model allows distributed systems to scale out in an unbounded and loosely coupled fashion without loss of performance, reliability or data consistency.
+通过广域网搭建，基于地理分布数据站点会导致延展性问题。模型解决了这些拓扑，支持包括从简单的对等（peer-to-peer）集群，到在广域网上多个数据中心之间的可靠通信。这个模型允许分布式系统在一个非绑定松耦合的方式延展， 而不会有性能，可靠性和数据一致性方面的损失。
 
-At the core of this architecture is the gateway sender configuration used for distributing region events to a remote site. You can deploy gateway sender instances in parallel, which enables an increase in throughput for distributing region events across the WAN. You can also configure gateway sender queues for persistence and high availability to avoid data loss in the case of a member failure.
+这个架构的核心是用于分发Region事件到远方站点的 网关发送器 （Gateway Sender）。可以并行部署网关发送器 （Gateway Sender）实例， 这样会提高在广域网上分发Region事件的吞吐量。也可以配置网关发送器 （Gateway Sender）的持久化和高可用，以避免因为一个成员的错误导致的数据丢失。
 
 ## <a id="concept_3B5E445B19884680900161BDF25E32C9__section_FF4C3B6E26104C4D93186F6FFE22B321" class="no-quick-link"></a>持续查询
 
-在一个类似JMS（Java Message Service）的消息系统中， 客户端订阅主题（topics）和队列（queues）。任何消息会通过主题分发给订阅者。通过应用使用OQL（Object Query Language）进行比较复杂的兴趣注册， Geode支持持续查询.
+在一个类似JMS（Java Message Service）的消息系统中， 客户端订阅主题（topics）和队列（queues）。任何消息会通过主题分发给订阅者。通过使用OQL（Object Query Language）可以进行比较复杂的兴趣注册， Geode支持持续查询.
 
 ## <a id="mainfeatures_heterogeneousdatasharing" class="no-quick-link"></a>跨编程语言数据共享
 
