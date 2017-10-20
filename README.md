@@ -28,12 +28,12 @@
 |JDK|Java Development Kit|
 |GC|Garbage Collector/Garbage Collect JVM中的垃圾回收|
 |Locator|注册客户端和服务器成员，使双方能够互相发现，同时可以提供一定的负载均衡功能|
-|Server Cache，Cache Server| GemFire分布式系统的服务器节点|
+|server, server cache，cache server| GemFire分布式系统的服务器节点|
 |Node， Member|均为GemFire集群的节点|
 |Client Cache|接入到GemFire分布式系统的客户端，负责管理本地缓存的生命周期|
-|Region|Region是一个分布式系统之上的抽象概念。一个Region允许你在系统的多个VM中存储数据，不用考虑数据存在那个节点上。Region提供了一个map接口能透明地从合适的VM上获取数据。这个Region类扩展了java.util.Map接口，但是它也支持查询和事务|
+|Region, data region|Region是一个分布式系统之上的抽象概念。一个Region允许你在系统的多个VM中存储数据，不用考虑数据存在那个节点上。Region提供了一个map接口能透明地从合适的VM上获取数据。这个Region类扩展了java.util.Map接口，但是它也支持查询和事务|
 |Replicated Region|一个Replicated Region保存着所有分区的数据拷贝||Partitioned Region|Partitioned Regions只保存一部分分区的数据拷贝|
-|GFSH|GemFire SHell，用于管理和监控GemFire的命令控制台|
+|GFSH,gfsh|GemFire SHell，用于管理和监控GemFire的命令控制台|
 |Redundant|副本，在GemFire中，Partitioned Region的副本数量范围为0-3个|
 |Primary|主数据|
 |Secondary|从数据|
@@ -49,10 +49,11 @@
 |Delta Propagation|变化传播|
 |OQL， Object-Query-Language|对象查询语言， Geode支持的一种对象关联查询语言， 只支持Select，不支持insert/update/delete|
 |Continuous Querying， CQ|持续查询|
-|Entry， Entries|每一个Key/Value对，简称为Entry|
+|Entry， Entries, data entry|每一个Key/Value对，简称为Entry|
 |Function|Geode中，类似于Map-reduce方式并行运行的计算功能，允许用户自定义|
 |PDX， PortableDataExchange|Geode自定义的高效，且可变结构的序列化方式|
 |Geode Pulse|Geode的监控页面， 基于HTML5， 建议使用Chrome或者FireFox浏览|
+|cluster configuration service|集群配置服务, 运行在 Locator 之上, 用于管理集群中各节点配置情况的服务|
 
 ## 参与者（按认领章节排序）
 
