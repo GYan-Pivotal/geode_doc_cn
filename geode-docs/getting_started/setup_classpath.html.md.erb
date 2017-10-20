@@ -19,14 +19,14 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-This topic describes how Geode processes set their CLASSPATH.
+本主题介绍Geode进程如何设置其CLASSPATH。
 
-To simplify CLASSPATH environment settings, Geode has organized all application libraries required by Geode processes into `*-dependencies.jar` files. All dependency JAR files are located in the `path_to_product/lib` directory. When starting a server or locator process using `gfsh`, the required application JAR files are automatically loaded into the process's CLASSPATH for you.
+为了简化CLASSPATH环境设置，Geode已将Geode进程所需的所有应用程序库组织到`* -dependencies.jar`文件中。 所有依赖JAR文件位于`path_to_product / lib`目录中。 当使用`gfsh`启动服务器或定位器进程时，所需的应用程序JAR文件将自动加载到进程的CLASSPATH中。
 
 **Note:**
-To embed Geode in your application, add `path_to_product/lib/geode-dependencies.jar` to your CLASSPATH.
+要在您的应用程序中嵌入Geode，请将“path_to_product / lib / geode-dependencies.jar”添加到您的CLASSPATH中。
 
-The following table lists the dependency JAR files associated with various Geode processes:
+下表列出了与Geode进程关联的依赖JAR文件：:
 
 <table>
 <colgroup>
@@ -35,8 +35,8 @@ The following table lists the dependency JAR files associated with various Geode
 </colgroup>
 <thead>
 <tr class="header">
-<th>Geode Process</th>
-<th>Associated JAR Files</th>
+<th>Geode 进程</th>
+<th>关联的JAR文件</th>
 </tr>
 </thead>
 <tbody>
@@ -45,53 +45,53 @@ The following table lists the dependency JAR files associated with various Geode
 <td>gfsh-dependencies.jar</td>
 </tr>
 <tr class="even">
-<td>server and locator</td>
+<td>server 和 locator</td>
 <td>geode-dependencies.jar
 <div class="note note">
 Note:
-<p>Use this library for all standalone or embedded Geode processes (including Java clients) that host cache data.</p>
+<p>将此库用于托管缓存数据的所有独立或嵌入式Geode进程（包括Java客户端）。</p>
 </div></td>
 </tr>
 </tbody>
 </table>
 
-## Modifying the CLASSPATH in gfsh-Managed Processes
+## 在gfsh管理进程中修改CLASSPATH
 
-There are two options for updating the CLASSPATH of Geode server and locator processes that are started on the gfsh command line.
+有两个选项用于更新在gfsh命令行上启动的Geode Server和Locator进程的CLASSPATH。
 
-**Option 1:** Specify the `--classpath` parameter upon process startup. For example, to modify the CLASSPATH of a locator:
+**选项 1:** 在进程启动时指定`--classpath`参数。 例如，要修改Locator的CLASSPATH：
 
 ``` pre
 gfsh> start locator --name=locator1 --classpath=/path/to/applications/classes.jar
 ```
 
-And to modify the CLASSPATH of a server:
+并修改Server的CLASSPATH:
 
 ``` pre
 gfsh> start server --name=server1 --classpath=/path/to/applications/classes.jar
 ```
 
-Application classes supplied as arguments to the `--classpath` option are *prepended* to the server or locator's CLASSPATH, beginning in second position. The first entry in the CLASSPATH is reserved for the core Geode jar file, for security reasons.
+作为`--classpath`选项的参数提供的应用程序类是*前缀*到Server或Locator的CLASSPATH，从第二个位置开始。 出于安全考虑，CLASSPATH中的第一个条目保留给核心Geode jar文件。
 
-**Option 2:** Define the CLASSPATH environment variable in your OS environment. Then, specify the `--include-system-classpath` parameter upon process startup. For example:
+**选项2：**在操作系统环境中定义CLASSPATH环境变量。 然后，在进程启动时指定`--include-system-classpath`参数。 例如：
 
 ``` pre
 gfsh> start locator --name=locator1 --include-system-classpath=true
 ```
 
-The same can also be done for server processes:
+Server进程也可以这样做:
 
 ``` pre
 gfsh> start server --name=server1 --include-system-classpath=true
 ```
 
-This option *appends* the contents of the system CLASSPATH environment variable to the locator or server's CLASSPATH upon startup. Specifying this option without a value sets it to true.
+此选项在启动时将系统CLASSPATH环境变量的内容*附加*到Locator或Server的CLASSPATH。 指定此选项但没有设置, 将默认设置为true。
 
-## Setting the CLASSPATH for Applications and Standalone Java Processes
+## 设置应用程序和独立Java进程的CLASSPATH
 
-If you are starting a Geode process programmatically (standalone or embedded), we recommend that you specify the CLASSPATH upon program execution using the `java -classpath` or `java -cp` command-line option. This method is preferred to setting the CLASSPATH as an environment variable since it allows you to set the value individually for each application without affecting other applications and without other applications modifying its value.
+如果以编程方式（独立或嵌入式）启动Geode进程，我们建议您使用`java -classpath`或`java -cp`命令行选项在程序执行时指定CLASSPATH。 此方法作为将CLASSPATH设置为环境变量的优先方法，因为它允许您为每个应用程序单独设置值而不影响其他应用程序，而且其他应用程序无法修改本进程的内容。
 
-For example, to start up a Geode locator process using the LocatorLauncher API, you can execute the following on the command line:
+例如，要使用LocatorLauncher API启动Geode Locator进程，可以在命令行上执行以下命令：
 
 ``` pre
 prompt# java -cp "path_to_product/lib/geode-dependencies.jar"
@@ -99,7 +99,7 @@ org.apache.geode.distributed.LocatorLauncher start locator1
 <locator-launcher-options>
 ```
 
-To start up a Geode server process using the ServerLauncher API:
+使用ServerLauncher API启动Geode Server进程：
 
 ``` pre
 prompt# java -cp "path_to_product/lib/geode-dependencies.jar:/path/to/your/applications/classes.jar"
@@ -107,16 +107,16 @@ org.apache.geode.distributed.ServerLauncher start server1
 <server-launcher-options>
 ```
 
-Note that in addition to the `*-dependencies.jar` file associated with the process, you must also specify any custom application JARs that you wish to access in your Geode process. For example, if you are planning on using a customized compressor on your regions, you should specify the application JAR that contains the compressor application you wish to use.
+请注意，除了与进程关联的“* -dependencies.jar”文件之外，还必须在Geode进程中指定要访问的任何自定义应用程序JAR。 例如，如果您计划在Region上使用定制的压缩器，则应指定包含要使用的压缩应用程序的应用程序JAR。
 
-To start up an application with an embedded cache:
+使用嵌入式缓存启动应用程序：
 
 ``` pre
 java -cp "path_to_product/lib/geode-dependencies.jar:/path/to/your/applications/classes.jar"
 com.mycompany.package.ApplicationWithEmbeddedCache
 ```
 
-**Note:**
-Another method for updating the CLASSPATH of a server process with your own applications is to use the `gfsh deploy` command. Deploying application JAR files will automatically update the CLASSPATH of all members that are targeted for deployment. See [Deploying Application JARs to Apache Geode Members](../configuring/cluster_config/deploying_application_jars.html#concept_4436C021FB934EC4A330D27BD026602C) for more details.
+**注意:**
+使用自己的应用程序更新服务器进程的CLASSPATH的另一种方法是使用`gfsh deploy`命令。 部署应用程序JAR文件将自动更新所有部署成员的CLASSPATH。 有关详细信息，请参阅[部署Apache应用程序JAR到Apache Geode成员]（../配置/ cluster_config / deploying_application_jars.html＃concept_4436C021FB934EC4A330D27BD026602C）。
 
 

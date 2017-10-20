@@ -1,5 +1,5 @@
 ---
-title:  Host Machine Requirements
+title:  主机要求
 ---
 
 <!--
@@ -19,30 +19,27 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Host machines must meet a set of requirements for Apache Geode.
+主机必须满足Apache Geode的一系列要求。
 
 <a id="system_requirements__section_1E1F206FBC8B4A898A449E0699907A7A"></a>
-Each machine that will run Apache Geode must meet the following requirements:
+运行Apache Geode的每台机器必须满足以下要求：
 
--   Java SE Development Kit 8 or a more recent version.
--   A system clock set to the correct time and a time synchronization service such as Network Time Protocol (NTP). Correct time stamps permit the following activities:
-    -   Logs that are useful for troubleshooting. Synchronized time stamps ensure that log messages from different hosts can be merged to reproduce an accurate chronological history of a distributed run.
-    -   Aggregate product-level and application-level time statistics. 
-    -   Accurate monitoring of the Geode system with scripts and other tools that read the system statistics and log files.
--   The host name and host files are properly configured for the machine. The host name and host file configuration can affect `gfsh` and Pulse functionality.
--   Many default Linux installations use SYN cookies to protect the 
-system against malicious attacks that flood TCP SYN packets.
-The use of SYN cookies dramatically reduces network bandwidth,
-and can be triggered by a running distributed system.
+-   Java SE Development Kit 8或更新版本。
+-   系统时钟设置为正确的时间, 同时设置正确的时间同步服务，如网络时间协议（NTP）。正确的时间戳可以进行以下活动:
+    -   用于故障排除的日志。同步时间戳可确保来自不同主机的日志消息可以合并，以再现分布式运行的精确时间历史。
+    -   综合产品级和应用级时间统计。 
+    -   正确的使用脚本, 和其他读取系统统计信息和日志文件的工具对Geode系统进行准确的监控。
+-   正确配置主机名和hosts文件。主机名和hosts文件配置可能会影响gfsh和Pulse功能
+-   许多默认的Linux安装配置使用SYN cookie来保护系统免遭洪泛TCP SYN数据包的恶意攻击。使用SYN cookie可以显著降低网络带宽，并可以由运行的分布式系统触发。
 
-    To disable SYN cookies permanently:
-    1. Edit the `/etc/sysctl.conf` file to include the following line:
+    要永久禁用SYN Cookie:
+    1. 编辑 `/etc/sysctl.conf` 文件,增加下面一行内容:
 
         ``` pre
         net.ipv4.tcp_syncookies = 0
         ```
-        Setting this value to zero disables SYN cookies.
-    2. Reload `sysctl.conf`:
+        把这个值设为 0 可以禁用 SYN cookies.
+    2. 重新加载 `sysctl.conf`:
 
         ``` pre
         sysctl -p

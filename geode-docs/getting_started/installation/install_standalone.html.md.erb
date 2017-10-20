@@ -1,5 +1,5 @@
 ---
-title:  How to Install
+title:  如何安装
 ---
 
 <!--
@@ -19,61 +19,60 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Build from source or use the ZIP or TAR distribution to install Apache Geode on every physical and virtual machine that will run Apache Geode.
+通过从源代码构建或使用ZIP或TAR分发方式，在将要运行Apache Geode的每个物理机和虚拟机上安装Apache Geode。
 
-## Build from Source on Unix
+## 在Unix上用源代码构建
 
-1.  Set the JAVA\_HOME environment variable.
+1.  设置环境变量 JAVA\_HOME
 
     ``` pre
     JAVA_HOME=/usr/java/jdk1.8.0_60
     export JAVA_HOME
     ```
 
-2.  Download the project source from the Releases page found at [http://geode.apache.org](http://geode.apache.org/), and unpack the source code.
-3.  Within the directory containing the unpacked source code, build without tests:
+2.  从 [http://geode.apache.org](http://geode.apache.org/)的 Release页面上下载源代码, 并解压.
+3.  在包含解压的源代码的目录中, 无测试构建:
 
     ``` pre
     $ ./gradlew build -Dskip.tests=true
     ```
 
-    Or, build with the tests:
+    或者, 有测试构建:
 
     ``` pre
     $ ./gradlew build 
     ```
 
-4.  Verify the installation by invoking `gfsh` to print version information and exit. On Linux/Unix platforms, the version will be similar to:
-
+4.  通过调用`gfsh`来打印版本信息来验证安装正确。 在Linux / Unix平台上，版本信息将类似于:
     ``` pre
     $ cd geode-assembly/build/install/apache-geode
     $ bin/gfsh version
     v1.1.0
     ```
 
-## Build from Source on Windows
+## 在Windows上用源代码构建
 
-1.  Set the JAVA\_HOME environment variable. For example:
+1.  设置环境变量 JAVA\_HOME:
 
     ``` pre
     $ set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_60" 
     ```
 
-2.  Install Gradle, version 2.3 or a more recent version.
-3.  Download the project source from the Releases page found at [http://geode.apache.org](http://geode.apache.org/), and unpack the source code.
-4.  Within the folder containing the unpacked source code, build without the tests:
+2.  安装Gradle 2.3或更新版本.
+3.  从 [http://geode.apache.org](http://geode.apache.org/)的 Release页面上下载源代码, 并解压.
+4.  在包含解压的源代码的目录中, 无测试构建:
 
     ``` pre
     $ gradle build -Dskip.tests=true
     ```
 
-    Or, build with the tests:
+    或者, 有测试构建:
 
     ``` pre
     $ gradle build
     ```
 
-5.  Verify the installation by invoking `gfsh` to print version information and exit.
+5.  通过调用`gfsh`来打印版本信息来验证安装正确。
 
     ``` pre
     $ cd geode-assembly\build\install\apache-geode\bin
@@ -81,55 +80,58 @@ Build from source or use the ZIP or TAR distribution to install Apache Geode on 
     v1.1.0
     ```
 
-## <a id="concept_0129F6A1D0EB42C4A3D24861AF2C5425__section_D3326496B2BB47A7AB0CFC1A5E266842" class="no-quick-link"></a>Install Binaries from .zip or .tar File
+## <a id="concept_0129F6A1D0EB42C4A3D24861AF2C5425__section_D3326496B2BB47A7AB0CFC1A5E266842" class="no-quick-link"></a>从.zip或.tar文件安装二进制文件
 
-1.  Download the .zip or .tar file from the Releases page found at [http://geode.apache.org](http://geode.apache.org/).
-2.  Unzip the .zip file or expand the .tar file, where `path_to_product` is an absolute path, and the file name will vary due to the version number. For the .zip format:
+1.  从 [http://geode.apache.org](http://geode.apache.org/)的 Release页面上 下载 .zip文件或 .tar文件.
+2.  解压.zip文件或 .tar文件, `path_to_product` 是绝对路径, 文件名将因版本号而有所不同.  
+    .zip 文件格式:
 
     ``` pre
     $ unzip apache-geode-1.1.0.zip -d path_to_product
     ```
 
-    For the .tar format:
+    .tar文件格式:
 
     ``` pre
     $ tar -xvf apache-geode-1.1.0.tar -C path_to_product
     ```
 
-3.  Set the JAVA\_HOME environment variable. On Linux/Unix platforms:
+3.  设置环境变量 JAVA\_HOME.
+    Linux/Unix 平台:
 
     ``` pre
     JAVA_HOME=/usr/java/jdk1.8.0_60
     export JAVA_HOME
     ```
 
-    On Windows platforms:
+    Windows平台:
 
     ``` pre
     set JAVA_HOME=c:\Program Files\Java\jdk1.8.0_60 
     ```
 
-4.  Add the Geode scripts to your PATH environment variable. On Linux/Unix platforms:
+4.  将Geode脚本添加到PATH环境变量中.
+	Linux/Unix 平台:
 
     ``` pre
     PATH=$PATH:$JAVA_HOME/bin:path_to_product/bin
     export PATH
     ```
 
-    On Windows platforms:
+    Windows平台:
 
     ``` pre
     set PATH=%PATH%;%JAVA_HOME%\bin;path_to_product\bin 
     ```
 
-5.  To verify the installation, type `gfsh version` at the command line and note that the output lists the installed version of Geode. For example:
+5.  要验证安装，请在命令行中键入`gfsh version`，并关注输出列出了安装的Geode版本。举例如下:
 
     ``` pre
     $ gfsh version
     v1.1.0
     ```
 
-    For more detailed version information such as the date of the build, build number and JDK version being used, invoke:
+    有关更详细的版本信息，如构建日期，正在使用的版本号和JDK版本，请调用:
 
     ``` pre
     $ gfsh version --full
