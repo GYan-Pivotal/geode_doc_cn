@@ -18,8 +18,6 @@
 * 0.5.0 - 2017.09.03 工程初始化，参考Apache Geode的1.2版本文档
 
 ## 目录
-
-
 ## 常见术语
 
 | English | 含义 |
@@ -67,6 +65,8 @@
 
 ### 校对
 
-##附注
-###如何编译
-运行geode-book/build_deploy.sh, 会把geode-docs下面最新的内容进行编译, 并通过 http 进行发布, 之后可以通过http://localhost:9292/查看修改结果.  建议在提交之前, 先编译, 检查一下自己将要提交的内容.
+## 附注
+### 如何编译
+ 1. 运行geode-book/build_deploy.sh, 会把geode-docs下面最新的内容进行编译, 并通过 http 进行发布.
+ 2. 之后可以通过[http://localhost:9292/](http://localhost:9292/) 查看修改结果. 
+ 3. 建议在提交之前, 先编译, 检查一下自己将要提交的内容.
