@@ -66,3 +66,7 @@
 | 使用Apache Geode开发/事务机制 | Mr.董 |进行中|
 
 ### 校对
+
+##附注
+###如何编译
+运行geode-book/build_deploy.sh, 会把geode-docs下面最新的内容进行编译, 并通过 http 进行发布, 之后可以通过http://localhost:9292/查看修改结果.  建议在提交之前, 先编译, 检查一下自己将要提交的内容.
