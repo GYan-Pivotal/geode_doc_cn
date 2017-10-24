@@ -1,5 +1,5 @@
 ---
-title:  Configuring and Running a Cluster
+title:  配置和运行集群
 ---
 
 <!--
@@ -19,67 +19,67 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Use the `gfsh` command-line utility to configure your Apache Geode cluster (also called a "distributed system"). The cluster configuration service persists the cluster configurations and distributes the configurations to members of the cluster. There are also several additional ways to configure a cluster.
+使用`gfsh`命令行工具来配置Apache Geode集群（也称为“分布式系统”）。 集群配置服务(cluster configuration service)将持久化集群配置，并将配置分发到集群的成员。 另外,还有几种其他方法来配置集群。
 
-Use `gfsh` to configure regions, disk stores, members, and other Geode objects. 
-You can also use `gfsh` to start and stop locators, servers, and Geode monitoring tools. As you execute these commands, the cluster configuration service persists the configuration. When new members join the cluster, the service distributes the configuration to the new members.
+使用`gfsh`来配置region，磁盘存储，成员和其他Geode对象。
+您也可以使用`gfsh`来启动和停止Locator，Server和Geode监视工具。 执行这些命令时，集群配置服务将持久化配置。 当新成员加入集群时，集群配置服务会将配置分发给新成员。
 
-`gfsh` is the recommended means of configuring and managing your Apache Geode cluster, however you can still configure many aspects of a cluster using the older methods of the cache.xml and gemfire.properties files. See [cache.xml](../reference/topics/chapter_overview_cache_xml.html#cache_xml) and the [Reference](../reference/book_intro.html#reference) for configuration parameters. You can also configure some aspects of a cluster using a Java API. See [Managing Apache Geode](../managing/book_intro.html#managing_gemfire_intro).
+`gfsh`是配置和管理Apache Geode集群的推荐方法，但是您仍然可以使用cache.xml和gemfire.properties文件的旧方法配置集群的各个功能。 有关配置参数，请参见[cache.xml](../reference/topics/chapter_overview_cache_xml.html#cache_xml) 和[Reference](../reference/book_intro.html#reference) 。 您还可以使用Java API配置集群的某些功能。 请参阅[Managing Apache Geode](../managing/book_intro.html#managing_gemfire_intro)。
 
--   **[Overview of the Cluster Configuration Service](../configuring/cluster_config/gfsh_persist.html)**
+-   **[集群配置服务概述](../configuring/cluster_config/gfsh_persist.html)**
 
-    The Apache Geode cluster configuration service persists cluster configurations created by `gfsh` commands to the locators in a cluster and distributes the configurations to members of the cluster.
+    Apache Geode集群配置服务可以把由`gfsh`命令创建的集群配置持久化到在集群中的Locator上,并将配置分发到集群的成员。
 
--   **[Tutorial—Creating and Using a Cluster Configuration](../configuring/cluster_config/persisting_configurations.html)**
+-   **[Tutorial—创建和使用集群配置](../configuring/cluster_config/persisting_configurations.html)**
 
-    A short walk-through that uses a single computer to demonstrate how to use `gfsh` to create a cluster configuration for a Geode cluster.
+    在单台机器上, 演示如何使用`gfsh`为Geode集群创建集群配置的简短步骤教程。
 
--   **[Deploying Application JARs to Apache Geode Members](../configuring/cluster_config/deploying_application_jars.html)**
+-   **[部署应用JARs到Apache Geode成员上](../configuring/cluster_config/deploying_application_jars.html)**
 
-    You can dynamically deploy your application JAR files to specific members or to all members in your distributed system. Geode automatically keeps track of JAR file versions; autoloads the deployed JAR files to the CLASSPATH; and auto-registers any functions that the JAR contains.
+    您可以将应用程序JAR文件动态部署到特定成员或分布式系统中的所有成员。 Geode自动跟踪JAR文件版本; 将部署的JAR文件自动加载到CLASSPATH; 并自动注册JAR所包含的任何function。
 
--   **[Using Member Groups](../configuring/cluster_config/using_member_groups.html)**
+-   **[使用成员组](../configuring/cluster_config/using_member_groups.html)**
 
-    Apache Geode allows you to organize your distributed system members into logical member groups.
+    Apache Geode允许您将分布式系统成员组织成逻辑成员组。
 
--   **[Exporting and Importing Cluster Configurations](../configuring/cluster_config/export-import.html)**
+-   **[导出和导入集群配置](../configuring/cluster_config/export-import.html)**
 
-    The cluster configuration service exports and imports configurations created using `gfsh` for an entire Apache Geode cluster.
+    集群配置服务可以导出和导入使用`gfsh`为整个Apache Geode集群创建的配置。
 
--   **[Cluster Configuration Files and Troubleshooting](../configuring/cluster_config/gfsh_config_troubleshooting.html)**
+-   **[集群配置文件及故障排除](../configuring/cluster_config/gfsh_config_troubleshooting.html)**
 
-    When you use the cluster configuration service in Geode, you can examine the generated configuration files in the `cluster_config` directory on the locator. `gfsh` saves configuration files at the cluster-level and at the individual group-level.
+    当您在Geode中使用集群配置服务时，可以检查Locator上的`cluster_config`目录中生成的配置文件。 `gfsh`可以将配置文件分别按照集群级别和个别组级继续保存。
 
--   **[Loading Existing Configuration Files into Cluster Configuration](../configuring/cluster_config/gfsh_load_from_shared_dir.html)**
+-   **[将已有的配置文件加载到集群配置中](../configuring/cluster_config/gfsh_load_from_shared_dir.html)**
 
-    To load an existing cache.xml or gemfire.properties configuration file into a new cluster, use the `--load-cluster-configuration-from-dir` parameter when starting up the locator.
+    要将已有的cache.xml或gemfire.properties配置文件加载到新的集群中，请在启动Locator时使用`--load-cluster-configuration-from-dir`参数。
 
--   **[Using gfsh to Manage a Remote Cluster Over HTTP or HTTPS](../configuring/cluster_config/gfsh_remote.html)**
+-   **[使用gfsh通过HTTP或HTTPS管理远程集群](../configuring/cluster_config/gfsh_remote.html)**
 
-    You can connect `gfsh` via HTTP or HTTPS to a remote cluster and manage the cluster using `gfsh` commands.
+    您可以通过HTTP或HTTPS将`gfsh`连接到远程集群，并使用`gfsh`命令来管理集群。
 
--   **[Deploying Configuration Files without the Cluster Configuration Service](../configuring/running/deploying_config_files.html)**
+-   **[不通过集群配置服务来部署配置文件](../configuring/running/deploying_config_files.html)**
 
-    You can deploy your Apache Geode configuration files in your system directory structure or in jar files. You determine how you want to deploy your configuration files and set them up accordingly.
+    您可以发布在系统目录结构或jar文件中的Apache Geode 配置文件。 您可以确定如何部署配置文件并相应地进行设置。
 
--   **[Starting Up and Shutting Down Your System](../configuring/running/starting_up_shutting_down.html)**
+-   **[启动和关闭系统](../configuring/running/starting_up_shutting_down.html)**
 
-    Determine the proper startup and shutdown procedures, and write your startup and shutdown scripts.
+    确定正确的启动和关闭过程，并编写启动和关闭脚本。
 
--   **[Running Geode Locator Processes](../configuring/running/running_the_locator.html)**
+-   **[运行Geode Locator进程](../configuring/running/running_the_locator.html)**
 
-    The locator is a Geode process that tells new, connecting members where running members are located and provides load balancing for server use.
+   Locator是一个Geode进程，它告诉新接入的成员目前运行成员所在的位置，并为 server使用提供负载平衡。
 
--   **[Running Geode Server Processes](../configuring/running/running_the_cacheserver.html)**
+-   **[运行Geode Server进程](../configuring/running/running_the_cacheserver.html)**
 
-    A Geode server is a process that runs as a long-lived, configurable member of a client/server system.
+    Geode服务器是作为客户端/服务器系统的一个长期可配置成员运行的进程。
 
--   **[Managing System Output Files](../configuring/running/managing_output_files.html)**
+-   **[管理系统输出文件](../configuring/running/managing_output_files.html)**
 
-    Geode output files are optional and can become quite large. Work with your system administrator to determine where to place them to avoid interfering with other system activities.
+    Geode输出文件是可选的，可以变得相当大。 与您的系统管理员协作确定放置在哪里，以避免干扰其他系统活动。
 
--   **[Firewall Considerations](../configuring/running/firewall_ports_config.html)**
+-   **[防火墙注意事项](../configuring/running/firewall_ports_config.html)**
 
-    You can configure and limit port usage for situations that involve firewalls, for example, between client-server or server-server connections.
+    在涉及防火墙的情况下, 您可以配置和限制端口的使用情况.例如，在客户端 - 服务器之间或服务器 - 服务器连接之间。
 
 

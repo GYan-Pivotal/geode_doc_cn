@@ -1,5 +1,5 @@
 ---
-title:  Overview of the Cluster Configuration Service
+title:  集群配置服务概述
 ---
 
 <!--
@@ -19,44 +19,41 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-The Apache Geode cluster configuration service persists cluster configurations created by `gfsh` commands to the locators in a cluster and distributes the configurations to members of the cluster.
+Apache Geode集群配置服务 可以把由`gfsh`命令创建的集群配置持久化到在集群中的 Locator 上,并将配置分发到集群的成员。
 
-## Why Use the Cluster Configuration Service
+## 为什么要使用集群配置服务
 
-We highly recommend that you use the `gfsh` command line and the cluster configuration service as the primary mechanism to manage your distributed system configuration. Using a common cluster configuration reduces the amount of time you spend configuring individual members and enforces consistent configurations when bringing up new members in your cluster. You no longer need to reconfigure each new member that you add to the cluster. You no longer need to worry about validating your cache.xml file. It also becomes easier to propagate configuration changes across your cluster and deploy your configuration changes to different environments.
+强烈建议使用`gfsh`命令行和集群配置服务作为管理分布式系统配置的主要机制。 使用常见的群集配置可以减少在群集中引入新成员时配置个别成员的时间并保证一致的配置。 您不再需要重新配置添加到群集的每个新成员。 也不再需要担心验证您的cache.xml文件。 在集群中传播配置更改也更容易，并将配置的修改部署到不同的环境中。
 
-You can use the cluster configuration service to:
+您可以使用集群配置服务完成下面的任务：
+- 保存整个Apache Geode集群的配置。
+- 使用先前保存的配置重新启动成员。
+- 从开发环境导出配置，并迁移该配置以创建测试或生产系统。
+- 启动新增的服务器，而不必单独配置每个服务器。
+- 配置一些服务器以保存某些 region和其他服务器以保存不同的 region，并配置所有服务器来托管一组公共region。
 
--   Save the configuration for an entire Apache Geode cluster.
--   Restart members using a previously-saved configuration.
--   Export a configuration from a development environment and migrate that configuration to create a testing or production system.
--   Start additional servers without having to configure each server separately.
--   Configure some servers to host certain regions and other servers to host different regions, and configure all servers to host a set of common regions.
+## 使用集群配置服务
 
-## Using the Cluster Configuration Service
+要在Geode中使用集群配置服务，必须在部署中使用专用独立的 Locator。 在多播(multicast)环境中或者协同分布Locator（与另一个进程（如服务器）一起运行的Locator）,您将不能使用集群配置服务。
 
-To use the cluster configuration service in Geode, you must use dedicated, standalone locators in your deployment. You cannot use the cluster configuration service with co-located locators (locators running in another process such as a server) or in multicast environments.
+独立Locator将配置分发到集群中的所有 Locator。 集群中,每个设置`--enable-cluster-configuration=true`的Locator, 都保留所有集群级和组级配置设置的记录。
 
-The standalone locators distribute configuration to all locators in a cluster. Every locator in the cluster with `--enable-cluster-configuration` set to true keeps a record of all cluster-level and group-level configuration settings.
+**注意:**
+`gfsh`的默认行为是创建和保存集群配置。 您可以在启动Locator时使用`--enable-cluster-configuration = false'选项来禁用集群配置服务。
 
-**Note:**
-The default behavior for `gfsh` is to create and save cluster configurations. You can disable the cluster configuration service by using the `--enable-cluster-configuration=false` option when starting locators.
+随后, 每个通过`gfsh`启动, 同时设置`--enable-cluster-configuration = true`选项的 server从Locator获取集群配置以及所有适合的组级配置(如果他们配置了成员组的话)。 要禁用server上的集群配置服务，您必须将`--use-cluster-configuration`参数设置为`false` 之后,启动server。 默认情况下，该参数设置为true。
+ 
+您还可以通过启动一个独立的设置参数`-load-cluster-configuration-from-dir`设置为true的Locator, 将现有的配置文件加载到集群配置服务中。请参阅 [将已有的配置文件加载到集群配置中](gfsh_load_from_shared_dir.html).
 
-Subsequently, any servers that you start with `gfsh` that have `--use-cluster-configuration` set to `true` will pick up the cluster configuration from the locator as well as any appropriate group-level configurations (for member groups they belong to). To disable the cluster configuration service on a server, you must start the server with the `--use-cluster-configuration` parameter set to `false`. By default, the parameter is set to true.
+## 集群配置服务如何工作
+当您使用`gfsh`命令创建Apache Geode的 region，磁盘存储和其他对象时，集群配置服务会将配置保存到集群（也称为Geode分布式系统）中的每个Locator。 如果在发出这些命令时指定了一个组，则单独保存仅包含适用于该组的配置。
 
-You can also load existing configuration files into the cluster configuration service by starting up a standalone locator with the parameter `--load-cluster-configuration-from-dir` set to true. See [Loading Existing Configuration Files into Cluster Configuration](gfsh_load_from_shared_dir.html).
-
-## How the Cluster Configuration Service Works
-
-When you use `gfsh` commands to create Apache Geode regions, disk-stores, and other objects, the cluster configuration service saves the configurations on each locator in the cluster (also called a Geode distributed system). If you specify a group when issuing these commands, a separate configuration is saved containing only configurations that apply to the group.
-
-When you use `gfsh` to start new Apache Geode servers, the locator distributes the persisted configurations to the new server. If you specify a group when starting the server, the server receives the group-level configuration in addition to the cluster-level configuration. Group-level configurations are applied after cluster-wide configurations; therefore you can use group-level to override cluster-level settings.
+当您使用`gfsh`启动新的Apache Geode的 server时，Locator将持久化的配置分发到新启动的 server上。 如果在启动 server时指定组，server除了收到集群级别的配置外还会收到组级配置。 组级配置会在应用集群级配置之后再生效, 因此您可以使用组级别来覆盖集群级设置。
 
 <img src="../../images_svg/cluster_config_overview.svg" id="concept_r22_hyw_bl__image_jjc_vhb_y4" class="image" />
 
-## gfsh Commands that Create Cluster Configurations
-
-The following `gfsh` commands cause the configuration to be written to all locators in the cluster (the locators write the configuration to disk):
+## 创建集群配置的gfsh命令
+以下`gfsh`命令会将配置写入集群中的所有Locator（Locator将配置写入磁盘）：
 
 -   `configure pdx`\*
 -   `create region`
@@ -71,19 +68,19 @@ The following `gfsh` commands cause the configuration to be written to all locat
 -   `deploy jar`
 -   `undeploy jar`
 
-**\*** Note that the `configure pdx` command must be executed *before* starting your data members. This command does not affect any currently running members in the system. Data members (with cluster configuration enabled) that are started after running this command will pick up the new PDX configuration.
+**\*** 请注意，执行`configure pdx`命令必须在配置数据成员(data members)之前。 此命令不影响系统中任何正在运行的成员。 运行此命令后启动的数据成员（启用集群配置服务）将会使用新的PDX配置。
 
-The following gateway-related commands use the cluster configuration service, and their configuration is saved by locators:
+以下与网关(gateway)相关的命令使用集群配置服务，Locator保存其配置:
 
 -   `create gateway-sender`
 -   `create gateway-receiver`
 
-## <a id="concept_r22_hyw_bl__section_bn3_23p_y4" class="no-quick-link"></a>gfsh Limitations
+## <a id="concept_r22_hyw_bl__section_bn3_23p_y4" class="no-quick-link"></a>gfsh限制事项
 
-There are some configurations that you cannot create using `gfsh`, and that you must configure using cache.xml or the API:
+有一些配置, 您不能使用`gfsh`创建. 这些配置,必须通过使用cache.xml或API进行配置：
 
--   Client cache configuration
--   You cannot specify parameters and values for Java classes for the following objects:
+-   Client cache配置
+-   您不能为以下对象的Java类指定参数和值:
     -   `function`
     -   `custom-load-probe`
     -   `cache-listener`
@@ -94,8 +91,7 @@ There are some configurations that you cannot create using `gfsh`, and that you 
     -   `instantiator`
     -   `pdx-serializer`
     
-        **Note:**
-        The `configure pdx` command always specifies the `org.apache.geode.pdx.ReflectionBasedAutoSerializer` class. You cannot specify a custom PDX serializer in gfsh.
+         **Note:** `configure pdx`命令总是指定`org.apache.geode.pdx.ReflectionBasedAutoSerializer`类。 您不能在gfsh中指定自定义PDX序列器。
 
     -   `custom-expiry`
     -   `initializer`
@@ -106,20 +102,21 @@ There are some configurations that you cannot create using `gfsh`, and that you 
     -   `partition-listener`
     -   `transaction-listener`
     -   `transaction-writer`
--   Adding or removing a `TransactionListener`
--   Adding JNDI bindings
--   Deleting an `AsyncEventQueue`
+-   增加或删除 `TransactionListener`
+-   增加 JNDI 绑定
+-   删除 `AsyncEventQueue`
 
-In addition, there are some limitations on configuring gateways using `gfsh`. You must use cache.xml or the Java APIs to configure the following:
 
--   Configuring a `GatewayConflictResolver`
--   You cannot specify parameters and values for Java classes for the following:
+另外，使用`gfsh`配置网关(gateways)也有一些限制。 您必须使用cache.xml或Java API来配置以下内容：
+
+-   配置 `GatewayConflictResolver`
+-   您不能为以下对象的Java类指定参数和值:
     -   `gateway-listener`
     -   `gateway-conflict-resolver`
     -   `gateway-event-filter`
     -   `gateway-transport-filter`
     -   `gateway-event-substitution-filter`
 
-## <a id="concept_r22_hyw_bl__section_fh1_c3p_y4" class="no-quick-link"></a>Disabling the Cluster Configuration Service
+## <a id="concept_r22_hyw_bl__section_fh1_c3p_y4" class="no-quick-link"></a>禁用集群配置服务
 
-If you do not want to use the cluster configuration service, start up your locator with the `--enable-cluster-configuration` parameter set to false or do not use standalone locators. You will then need to configure the cache (via cache.xml or API) separately on all your distributed system members.
+If you do not want to use the cluster configuration service, start up your locator with the `--enable-cluster-configuration` parameter set to false or do not use standalone locators. You will then need to configure the cache (via cache.xml or API) separately on all your distributed system members.如果不想使用集群配置服务，请将`--enable-cluster-configuration`参数设置为false或不以独立的方式来启动Locator。 然后，您需要在所有分布式系统成员上逐个配置缓存（通过cache.xml或API）。
