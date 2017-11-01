@@ -1,5 +1,5 @@
 ---
-title:  Tutorial—Creating and Using a Cluster Configuration
+title:  Tutorial—创建和使用集群配置
 ---
 
 <!--
@@ -18,22 +18,21 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+使用单台计算机演示如何使用`gfsh`为Geode集群创建集群配置的简短步骤。
 
-A short walk-through that uses a single computer to demonstrate how to use `gfsh` to create a cluster configuration for a Geode cluster.
+`gfsh`命令行工具允许您配置和启动Geode集群。 集群配置服务使用Apache Geode的 Locator将配置组和集群级别进行存储，并在新成员启动时将这些配置提供给新成员。  Locator将配置存储在一个仅有所有Locator可见的隐藏Region中，并将配置数据以XML文件格式写入磁盘。 配置数据可由`gfsh`命令进行更新。
 
-The `gfsh` command-line tool allows you to configure and start a Geode cluster. The cluster configuration service uses Apache Geode locators to store the configuration at the group and cluster levels and serves these configurations to new members as they are started. The locators store the configurations in a hidden region that is available to all locators and also write the configuration data to disk as XML files. Configuration data is updated as `gfsh` commands are executed.
+本节提供了配置简单的Apache Geode集群，然后在新的上下文中重新使用该配置的一个步骤演示。
 
-This section provides a walk-through example of configuring a simple Apache Geode cluster and then re-using that configuration in a new context.
+1.  创建一个工作目录（例如：`/home/username/my_geode`）,并切换到这个新目录。 此目录将包含集群的配置。
 
-1.  Create a working directory (For example:`/home/username/my_geode`) and switch to the new directory. This directory will contain the configurations for your cluster.
-
-2.  Start the `gfsh` command-line tool. For example:
+2.  启动`gfsh`命令行工具。 例如：
 
     ``` pre
     $ gfsh
     ```
 
-    The `gfsh` command prompt displays.
+    将显示“gfsh”命令提示符。
 
     ``` pre
         _________________________     __
@@ -47,7 +46,7 @@ This section provides a walk-through example of configuring a simple Apache Geod
 
     ```
 
-3.  Start a locator using the command in the following example:
+3.  使用以下示例中的命令启动Locator：
 
     ``` pre
     gfsh>start locator --name=locator1
@@ -71,9 +70,9 @@ This section provides a walk-through example of configuring a simple Apache Geod
     Cluster configuration service is up and running.
     ```
 
-    Note that `gfsh` responds with a message indicating that the cluster configuration service is up and running. If you see a message indicating a problem, review the locator log file for possible errors. The path to the log file is displayed in the output from `gfsh`.
+    请注意，`gfsh`响应一条消息，标明集群配置服务已启动并运行。 如果您看到一条消息指出问题，请查看 Locator日志文件以获取可能的错误。 日志文件的路径显示在`gfsh`的输出中。
 
-4.  Start Apache Geode servers using the commands in the following example:
+4.  使用以下示例中的命令启动Apache Geode服务器：
 
     ``` pre
     gfsh>start server --name=server1 --group=group1
@@ -125,9 +124,9 @@ This section provides a walk-through example of configuring a simple Apache Geod
     :/Users/username/Apache_Geode_1.0.0_Linux/lib/server-dependencies.jar
     ```
 
-    Note that the `gfsh` commands you used to start `server1` and `server2` specify a group named `group1` while the command for `server3` did not specify a group name.
+    请注意，用于启动`server1`和`server2`的`gfsh`命令指定一个名为`group1`的组，而`server3`的命令没有指定组名。
 
-5.  Create some regions using the commands in the following example:
+5.  使用以下示例中的命令创建一些Region：
 
     ``` pre
     gfsh>create region --name=region1 --group=group1 --type=REPLICATE
@@ -144,9 +143,9 @@ This section provides a walk-through example of configuring a simple Apache Geod
     server3 | Region "/region2" created on "server3"
     ```
 
-    Note that `region1` is created on all cache servers that specified the group named `group1` when starting the cache server (`server1` and `server2`, in this example). `region2` is created on all members because no group was specified.
+    请注意，在所有 启动缓存服务器（在本示例中为`server1`和`server2`）时所有指定组名为`group1`的 所有缓存服务器上都会创建`region1`。 因为没有指定任何组, `region2`是在所有成员上创建的。
 
-6.  Deploy jar files. Use the `gfsh deploy` command to deploy application jar files to all members or to a specified group of members. The following example deploys the `mx4j-3.0.1.jar` and `mx4j.jar` files from the distribution. (Note: This is only an example, you do not need to deploy these files to use the Cluster Configuration Service. Alternately, you can use any two jar files for this demonstration.)
+6.  部署jar文件。使用`gfsh deploy`命令将应用程序jar文件部署到所有成员或指定的成员组。 以下示例从发行版中部署了`mx4j-3.0.1.jar`和`mx4j.jar`文件。 （注意：这只是一个例子，您不需要部署这些文件以使用群集配置服务。或者，您可以使用任何两个jar文件进行此演示。）
 
     ``` pre
     gfsh>deploy --group=group1 --jar=/lib/mail.jar
@@ -165,24 +164,24 @@ This section provides a walk-through example of configuring a simple Apache Geod
     server3 | ra.jar       | /Users/username/my_geode/server1/vf.gf#ra.jar#1
     ```
 
-    Note that the `mx4j-3.0.1.jar` file was deployed only to the members of `group1` and the `ra.jar` was deployed to all members.
+    请注意，`mx4j-3.0.1.jar`文件仅部署到`group1`的成员，`ra.jar`已部署到所有成员。
 
-7.  Export the cluster configuration.
-    You can use the `gfsh export cluster-configuration` command to create a zip file that contains the cluster's persisted configuration. The zip file contains a copy of the contents of the `cluster_config` directory. For example:
+7.  导出集群配置
+    您可以使用`gfsh export cluster-configuration`命令创建一个包含集群持久配置的zip文件。 该zip文件包含`cluster_config`目录的内容。 例如：
 
     ``` pre
     gfsh>export cluster-configuration --zip-file-name=myClusterConfig.zip --dir=/Users/username
     ```
 
-    Apache Geode writes the cluster configuration to the specified zip file.
+    Apache Geode将集群配置写入指定的zip文件。
 
     ``` pre
     Downloading cluster configuration : /Users/username/myClusterConfig.zip
     ```
 
-    The remaining steps demonstrate how to use the cluster configuration you just created.
+    剩下的步骤演示了如何使用您刚才创建的集群配置。
 
-8.  Shut down the cluster using the following commands:
+8.  使用以下命令关闭集群：
 
     ``` pre
     gfsh>shutdown --include-locators=true
@@ -195,21 +194,21 @@ This section provides a walk-through example of configuring a simple Apache Geod
     gfsh>
     ```
 
-9.  Exit the `gfsh` command shell:
+9.  退出`gfsh`命令工具：
 
     ``` pre
     gfsh>quit
     Exiting...
     ```
 
-10. Create a new working directory (for example: `new_geode`) and switch to the new directory.
-11. Start the `gfsh` command shell:
+10. 创建一个新的工作目录（例如：`new_geode`）并切换到这个新目录。
+11. 启动`gfsh` 命令工具:
 
     ``` pre
     $ gfsh
     ```
 
-12. Start a new locator. For example:
+12. 开始一个新的Locator。 例如:
 
     ``` pre
     gfsh>start locator --name=locator2 --port=10335
@@ -233,16 +232,16 @@ This section provides a walk-through example of configuring a simple Apache Geod
     Cluster configuration service is up and running.
     ```
 
-13. Import the cluster configuration using the `import cluster-configuration` command. For example:
+13. 用`import cluster-configuration`命令导入集群配置。 例如：
 
     ``` pre
     gfsh>import cluster-configuration --zip-file-name=/Users/username/myClusterConfig.zip
     Cluster configuration successfully imported
     ```
 
-    Note that the `locator2` directory now contains a `cluster_config` subdirectory.
+    请注意，`locator2`目录现在包含了`cluster_config`子目录。
 
-14. Start a server that does not reference a group:
+14. 启动不指定组的Server:
 
     ``` pre
     gfsh>start server --name=server4 --server-port=40414
@@ -262,7 +261,7 @@ This section provides a walk-through example of configuring a simple Apache Geod
     :/Users/username/Apache_Geode_1.0.0_Linux/lib/server-dependencies.jar
     ```
 
-15. Start another server that references `group1`:
+15. 启动另一个服务器,指定`group1`:
 
     ``` pre
     gfsh>start server --name=server5 --group=group1 --server-port=40415
@@ -282,7 +281,7 @@ This section provides a walk-through example of configuring a simple Apache Geod
     :/Users/username/Apache_Geode_1.0.0_Linux/lib/server-dependencies.jar
     ```
 
-16. Use the `list regions` command to display the configured regions. Note that region1 and region2, which were configured in the original cluster level are available.
+16. Use the `list regions` command to display the configured regions. Note that region1 and region2, which were configured in the original cluster level are available.使用`list regions`命令显示配置的Region。 请注意，配置成之前集群级别的region1和region2可用。
 
     ``` pre
     gfsh>list regions
@@ -292,7 +291,7 @@ This section provides a walk-through example of configuring a simple Apache Geod
     region2
     ```
 
-17. Use the `describe region` command to see which members host each region. Note that region1 is hosted only by server5 because server5 was started using the group1 configuration. region2 is hosted on both server4 and server5 because region2 was created without a group specified.
+17. 使用`describe region`命令查看集群的那个成员保存的指定region情况。 请注意，region1仅由server5保存，因为server5使用group1配置启动。 region2保存在server4和server5上，因为region2是在没有指定组的情况下创建的。
 
     ``` pre
     gfsh>describe region --name=region1
@@ -325,9 +324,9 @@ This section provides a walk-through example of configuring a simple Apache Geod
            | scope       | distributed-ack
     ```
 
-    This new cluster uses the same configuration as the original system. You can start any number of servers using this cluster configuration. All servers will receive the cluster-level configuration. Servers that specify `group1` also receive the `group1` configuration.
+    这个新的集群与原始系统使用相同的配置。 您可以使用此集群配置, 启动任意数量的服务器。 所有服务器都将收到集群级配置。 指定`group1`的服务器也会收到`group1`配置。
 
-18. Shut down your cluster using the following commands:
+18. 使用以下命令关闭集群：
 
     ``` pre
     gfsh>shutdown --include-locators=true
