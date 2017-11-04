@@ -1,5 +1,5 @@
 ---
-title:  Deploying Application JARs to Apache Geode Members
+title:  部署应用JARs到Apache Geode成员上
 ---
 
 <!--
@@ -19,65 +19,64 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-You can dynamically deploy your application JAR files to specific members or to all members in your distributed system. Geode automatically keeps track of JAR file versions; autoloads the deployed JAR files to the CLASSPATH; and auto-registers any functions that the JAR contains.
+您可以将应用程序JAR文件动态部署到指定的成员或分布式系统中的所有成员上。 Geode会自动跟踪JAR文件的版本; 将已部署的JAR文件自动加载到CLASSPATH; 并自动注册JAR包含的所有函数(function)。
 
-To deploy and undeploy application JAR files in Apache Geode, use the `gfsh` `deploy` or `undeploy` command. You can deploy a single JAR or multiple JARs (by either specifying the JAR filenames or by specifying a directory that contains the JAR files), and you can also target the deployment to a member group or multiple member group. For example, after connecting to the distributed system where you want to deploy the JARs, you could type at the `gfsh` prompt:
+要在Apache Geode中部署和取消部署应用程序JAR文件，请使用`gfsh`的` deploy`或`undeploy`命令。 您可以部署单个JAR或多个JAR（通过指定JAR文件名或指定包含JAR文件的目录），也可以将部署指定到单个成员组或多个成员组。 例如，连接到要部署JAR的分布式系统后，可以在`gfsh`提示符处输入：
 
 ``` pre
 gfsh> deploy --jar=group1_functions.jar
 ```
 
-This command deploys the `group1_functions.jar` file to all members in the distributed system.
+此命令将`group1_functions.jar`文件部署到分布式系统中的所有成员。
 
-To deploy the JAR file to a subset of members, use the `--group` argument. For example:
+要将JAR文件部署到成员组，请使用`--group`参数。 例如：
 
 ``` pre
 gfsh> deploy --jar=group1_functions.jar --group=MemberGroup1
 ```
 
-In the example it is assumed that you have already defined the member group that you want to use when starting up your members. See [Configuring and Running a Cluster](../chapter_overview.html#concept_lrh_gyq_s4) for more information on how to define member groups and add a member to a group.
-
-To deploy all the JAR files that are located in a specific directory to all members:
+在示例中，假设您已经定义了在启动成员时要使用的成员组。 有关如何定义成员组和将成员添加到组的更多信息, 请参阅 [配置和运行集群](../chapter_overview.html#concept_lrh_gyq_s4) 。
+将位于指定目录中的所有JAR文件部署到所有成员：
 
 ``` pre
 gfsh> deploy --dir=libs/group1-libs
 ```
 
-You can either provide a JAR file name or a directory of JARs for deployment, but you cannot specify both at once.
+您可以指定JAR文件名或部署的JAR目录，但不能同时指定两者。
 
-To undeploy all previously deployed JAR files throughout the distributed system:
+在整个分布式系统中,取消部署所有先前部署的JAR文件：
 
 ``` pre
 gfsh> undeploy
 ```
 
-To undeploy a specific JAR file:
+取消部署指定的JAR文件：
 
 ``` pre
 gfsh> undeploy --jar=group1_functions.jar
 ```
 
-To target a specific member group when undeploying all JAR files:
+要取消部署指定的成员组所有JAR文件：
 
 ``` pre
 gfsh> undeploy --group=MemberGroup1
 ```
 
-Only JAR files that have been previously deployed on members in the MemberGroup1 group will be undeployed.
+只有以前在MemberGroup1组中的成员上部署的JAR文件才会被取消部署。
 
-To see a list of all deployed JARs in your distributed system:
+要查看分布式系统中所有已部署的JAR的列表，请执行以下操作：
 
 ``` pre
 gfsh> list deployed
 ```
 
-To see a list of all deployed JARs in a specific member group:
+要查看指定成员组中所有已部署的JAR的列表，请执行以下操作：
 
 ``` pre
 gfsh> list deployed --group=MemberGroup1
 ```
 
-Sample output:
+示例输出：
 
 ``` pre
  
@@ -87,45 +86,45 @@ datanode1 | group1_functions.jar | /usr/local/gemfire/deploy/vf.gf#group1_functi
 datanode2 | group1_functions.jar | /usr/local/gemfire/deploy/vf.gf#group1_functions.jar#1
 ```
 
-For more information on `gfsh` usage, see [gfsh](../../tools_modules/gfsh/chapter_overview.html).
+有关`gfsh`用法的更多信息，请参阅 [gfsh](../../tools_modules/gfsh/chapter_overview.html).
 
-## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_D36E345C6E254D27B0F4B0C8711F5E6A" class="no-quick-link"></a>Deployment Location for JAR Files
+## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_D36E345C6E254D27B0F4B0C8711F5E6A" class="no-quick-link"></a>JAR文件的部署位置
 
-The system location where JAR files are written on each member is determined by the `deploy-working-dir` Geode property configured for that member. For example, you could have the following configured in the `gemfire.properties` file for your member:
+每个成员上写入JAR文件的系统位置由为该成员配置的`deploy-working-dir` Geode属性确定。 例如，您可以在`gemfire.properties`文件中为您的成员配置以下内容：
 
 ``` pre
 #gemfire.properties
 deploy-working-dir=/usr/local/gemfire/deploy
 ```
 
-This deployment location can be local or a shared network resource (such as a mount location) used by multiple members in order to reduce disk space usage. If you use a shared directory, you still need to deploy the JAR file on every member that you want to have access to the application, because deployment updates the CLASSPATH and auto-registers functions.
+此部署位置可以是本地或多个成员使用的共享网络资源（如安装位置），以减少磁盘空间使用量。 如果使用共享目录，则仍然需要在每个想要访问应用程序的成员上部署JAR文件，因为部署将更新CLASSPATH和自动注册函数(functions)。
 
-## About Deploying JAR Files and the Cluster Configuration Service
+## 关于部署JAR文件和集群配置服务
 
-By default, the cluster configuration service distributes deployed JAR files to all locators in the distributed system. When you start a new server using `gfsh`, the locator supplies configuration files and deployed jar files to the member and writes them to the server's directory.
+默认情况下，集群配置服务将部署的JAR文件分发到分布式系统中的所有Locator。 当你使用`gfsh`启动一个新服务器时，locator提供配置文件和部署的jar文件给成员，并把它们写到服务器的目录中。
 
-See [Overview of the Cluster Configuration Service](gfsh_persist.html).
+请参阅 [集群配置服务概述](gfsh_persist.html).
 
-## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_D9219C5EEED64672930200677C2118C9" class="no-quick-link"></a>Versioning of JAR Files
+## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_D9219C5EEED64672930200677C2118C9" class="no-quick-link"></a>JAR文件的版本控制
 
-When you deploy JAR files to a distributed system or member group, the JAR file is modified to indicate version information in its name. Each JAR filename is prefixed with `vf.gf#` and contains a version number at the end of the filename. For example, if you deploy `MyClasses.jar` five times, the filename is displayed as `vf.gf#MyClasses.jar#5` when you list all deployed jars.
+将JAR文件部署到分布式系统或成员组时，将修改JAR文件名, 以在其文件名中的显示版本信息。 每个JAR文件名以`vf.gf＃`为前缀，并在文件名末尾包含一个版本号。 例如，如果您部署五次`MyClasses.jar`，则列出所有已部署的jar时，文件名将显示为`vf.gf#MyClasses.jar#5`。
 
-When you deploy a new JAR file, the member receiving the deployment checks whether the JAR file is a duplicate, either because the JAR file has already been deployed on that member or because the JAR file has already been deployed to a shared deployment working directory that other members are also using. If another member has already deployed this JAR file to the shared directory (determined by doing a byte-for-byte compare to the latest version in its directory), the member receiving the latest deployment does not write the file to disk. Instead, the member updates the ClassPathLoader to use the already deployed JAR file. If a newer version of the JAR file is detected on disk and is already in use, the deployment is canceled.
+部署新JAR文件时，接收部署的成员会检查JAR文件是否重复，可能因为JAR文件已经部署在该成员上，或者因为JAR文件已部署到与其他成员共同使用的共享部署工作目录。 如果另一个成员已经将此JAR文件部署到共享目录（通过对其目录中的最新版本进行逐字节比较来确定），则接收最新部署的成员不会将该文件写入磁盘。 相反，成员更新ClassPathLoader以使用已经部署的JAR文件。 如果在磁盘上检测到较新版本的JAR文件并且已在使用中，则部署将被取消。
 
-When a member begins using a JAR file, the member obtains a shared lock on the file. If the member receives a newer version by deployment, the member releases the shared lock and tries to delete the existing JAR file in favor of the newer version. If no other member has a shared lock on the existing JAR, the existing, older version JAR is deleted.
+成员开始使用JAR文件时，成员将获得文件上的共享锁。 如果成员通过部署接收到较新的版本，则成员将释放共享锁，并尝试删除现有的JAR文件，以使用较新的版本。 如果没有其他成员在现有JAR上具有共享锁定，则删除现有的旧版本JAR。
 
-## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_F8AC59EEC8C5434FBC6F38A12A7371CE" class="no-quick-link"></a>Automatic Class Path Loading
+## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_F8AC59EEC8C5434FBC6F38A12A7371CE" class="no-quick-link"></a>自动类路径加载
 
-When a cache is started, the new cache requests that the latest versions of each JAR file in the current working directory be added to the ClassPathLoader. If a JAR file has already been deployed to the ClassPathLoader, the ClassPathLoader updates its loaded version if a newer version is found; otherwise, there is no change. If detected, older versions of the JAR files are deleted if no other member has a shared lock on them.
+启动缓存时，新缓存会请求将当前工作目录中每个JAR文件的最新版本添加到ClassPathLoader中。如果JAR文件已经部署到ClassPathLoader，则在找到较新的版本时，ClassPathLoader会更新其加载的版本;否则，则不会有变化。如果检测到其他成员没有共享锁，则删除旧版本的JAR文件。
 
-Undeploying a JAR file does not automatically unload the classes that were loaded during deployment. You need to restart your members to unload those classes.
+取消部署JAR文件不会自动卸载在部署过程中加载的类。您需要重新启动您的成员才能卸载这些类(在部署过程中加载的类)。
 
-When a cache is closed it requests that all currently deployed JAR files be removed from the ClassPathLoader.
+当缓存关闭时，它会请求将所有当前部署的JAR文件从ClassPathLoader中删除。
 
-If you are using a shared deployment working directory, all members sharing the directory should belong to the same member group. Upon restart, all members that share the same deployment working directory will deploy and autoload their CLASSPATH with any JARs found in the current working directory. This means that some members may load the JARs even though they are not part of the member group that received the original deployment.
+如果您正在使用共享部署工作目录，则共享该目录的所有成员应该属于同一个成员组。重新启动时，共享相同部署工作目录的所有成员, 将使用当前工作目录中的所有JAR, 来自动部署和自动加载到CLASSPATH中。这意味着有些成员可能会加载JAR，即使它们不属于收到原始部署的成员组。
 
-## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_C1ECA5A66C27403A9A18D0E04EFCC66D" class="no-quick-link"></a>Automatic Function Registration
+## <a id="concept_4436C021FB934EC4A330D27BD026602C__section_C1ECA5A66C27403A9A18D0E04EFCC66D" class="no-quick-link"></a>自动函数(Function)注册
 
-When you deploy a JAR file that contains a function (in other words, contains a class that implements the Function interface), the function is automatically registered through the `FunctionService.registerFunction` method. If another JAR file is deployed (either with the same JAR filename or another filename) with the same function, the new implementation of the function is registered, overwriting the old one. If a JAR file is undeployed, any functions that were auto-registered at the time of deployment are unregistered. Because deploying a JAR file that has the same name multiple times results in the JAR being un-deployed and re-deployed, functions in the JAR are unregistered and re-registered each time this occurs. If a function with the same ID is registered from multiple differently named JAR files, the function is unregistered if any of those JAR files are re-deployed or un-deployed.
+当你部署一个包含函数(Function) （换句话说，包含一个实现了Function接口的类）的JAR文件时，该函数(Function) 将通过`FunctionService.registerFunction`方法自动注册。 如果部署另一个JAR文件（使用相同的JAR文件名或其他文件名）中包含相同的函数(Function)，则会注册该函数(Function)的新实现，覆盖旧的。 如果取消部署JAR文件，则在部署时自动注册的任何函数(Function)都将被取消注册。 因为多次部署具有相同名称的JAR文件会导致JAR被重新部署，所以JAR中的函数(Function)在每次部署时都会被取消注册并重新注册。 如果具有相同ID的函数(Function)是从多个不同名称的JAR文件注册的，那么当这些JAR文件中的任何一个被重新部署或取消部署，则该函数将被取消注册。
 
-During `cache.xml` load, the parameters for any declarables are saved. If functions found in a JAR file are also declarable, and have the same class name as the declarables whose parameters were saved after loading cache.xml, then function instances are created using those Parameters and are also registered. Therefore, if the same function is declared multiple times in the `cache.xml` with different sets of parameters, when the JAR is deployed a function is instantiated for each set of parameters. If any functions are registered using parameters from a `cache.xml` load, the default, no-argument function is not registered.
+在`cache.xml`加载期间，任何可声明的参数都被保存。 如果在JAR文件中找到的函数(Function)也是可声明的，并且具有与加载cache.xml保存参数的声明具有相同的类名，则会使用这些参数来创建函数(Function)实例，并且也注册这些函数(Function)。 因此，如果在`cache.xml`中多次声明相同但具有不同参数集的函数，那么当部署JAR时，将为每组参数实例化一个函数(Function)。 如果任何函数(Function)是使用`cache.xml`加载的参数进行注册的，则默认的无参数函数是不会被注册的。
