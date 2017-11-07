@@ -1,5 +1,5 @@
 ---
-title:  Exporting and Importing Cluster Configurations
+title:  导出和导入集群配置
 ---
 
 <!--
@@ -18,39 +18,38 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+使用`gfsh`为整个Apache Geode群集创建的配置， 可以通过集群配置服务进行导出和导入。
 
-The cluster configuration service exports and imports configurations created using `gfsh` for an entire Apache Geode cluster.
+集群配置服务会在您使用`gfsh`命令创建Region，磁盘存储和其他对象时保存集群配置。 您可以将此配置以及任何包含应用程序文件的jar文件导出到zip文件，然后导入此配置来创建新的群集。
 
-The cluster configuration service saves the cluster configuration as you create a regions, disk-stores and other objects using `gfsh` commands. You can export this configuration as well as any jar files that contain application files to a zip file and then import this configuration to create a new cluster.
+## 导出集群配置
 
-## Exporting a Cluster Configuration
+执行`gfsh``export cluster-configuration`命令，将集群的配置数据保存在一个zip文件中。 此zip文件包含集群级配置的子目录以及集群中指定的每个组的目录。 这些目录的内容的详细说明， 请参阅[集群配置文件及故障排除](gfsh_config_troubleshooting.html#concept_ylt_2cb_y4)。
 
-Issue the `gfsh` `export cluster-configuration` command to save the configuration data for your cluster in a zip file. This zip file contains subdirectories for cluster-level configurations and a directory for each group specified in the cluster. The contents of these directories are described in [Cluster Configuration Files and Troubleshooting](gfsh_config_troubleshooting.html#concept_ylt_2cb_y4).
-
-To export a cluster configuration, run the `gfsh` `export cluster-configuration` command while connected to a Geode cluster. For example:
+要导出集群配置，请连接到Geode集群并运行`gfsh` `export cluster-configuration`命令。 例如：
 
 ``` pre
 export cluster-configuration --zip-file-name=myClusterConfig.zip --dir=/home/username/configs
 ```
 
-See [export cluster-configuration](../../tools_modules/gfsh/command-pages/export.html#topic_mdv_jgz_ck).
+请参阅 [导出集群配置](../../tools_modules/gfsh/command-pages/export.html#topic_mdv_jgz_ck).
 
-**Note:**
-`gfsh` only saves cluster configuration values for configurations specified using `gfsh`. Configurations created by the management API are not saved with the cluster configurations.
+**注意：**
+`gfsh`只保存使用`gfsh`进行配置的集群配置内容。 管理API创建的配置不会与集群配置一起保存。
 
-## Importing a Cluster Configuration
+## 导入集群配置
 
-You can import a cluster configuration to a running locator. After importing the configuration, any servers you start receive this cluster configuration.
+您可以将集群配置导入正在运行的Locator。 导入配置后，您启动的任何服务器都会收到此集群配置。
 
-To import a cluster configuration, start one or more locators and then run the `gfsh` `import cluster-configuration` command. For example:
+要导入集群配置，请启动一个或多个Locator，然后运行`gfsh` `import cluster-configuration`命令。 例如：
 
 ``` pre
 import cluster-configuration --zip-file-name=/home/username/configs/myClusterConfig.zip
 ```
 
-See [import cluster-configuration](../../tools_modules/gfsh/command-pages/import.html#topic_vnv_grz_ck).
+请参阅 [导入集群配置](../../tools_modules/gfsh/command-pages/import.html#topic_vnv_grz_ck).
 
-**Note:**
-You cannot import a cluster configuration to a cluster where cache servers are already running.
+**注意:**
+您无法将集群配置导入到缓存服务器已在运行的集群中。
 
 

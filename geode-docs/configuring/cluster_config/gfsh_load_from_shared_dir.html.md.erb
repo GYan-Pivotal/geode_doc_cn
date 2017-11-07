@@ -1,5 +1,5 @@
 ---
-title:  Loading Existing Configuration Files into Cluster Configuration
+title:  将已有配置文件加载到集群配置中
 ---
 
 <!--
@@ -19,26 +19,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-To load an existing cache.xml or gemfire.properties configuration file into a new cluster, use the `--load-cluster-configuration-from-dir` parameter when starting up the locator.
+要将现有的cache.xml或gemfire.properties配置文件加载到新群集，请在启动Locator时使用`--load-cluster-configuration-from-dir`参数。
 
-You can use this technique to migrate a single server's configuration into the cluster configuration service. To load an existing cache.xml file or cluster configuration into a cluster, perform the following steps:
+您可以使用此技术将单个服务器的配置迁移到集群配置服务中。 要将已有的cache.xml文件或集群配置加载到集群中，请执行以下步骤：
 
-1.  Make sure the locator is not currently running.
-2.  Within the locator's working directory, create a `cluster_config/cluster` directory if the directory does not already exist.
-3.  Copy the desired configuration files (cache.xml or gemfire.properties, or both) into the `cluster_config/cluster` directory.
-4.  Rename the configuration files as follows:
-    -   Rename `cache.xml` to `cluster.xml`
-    -   Rename `gemfire.properties` to `cluster.properties`
+1.  确保Locator当前不在运行。
+2.  在Locator的工作目录中，如果目录不存在，则创建一个`cluster_config/cluster`目录。
+3.  将所需的配置文件（cache.xml或gemfire.properties，或者一起）复制到`cluster_config / cluster`目录。
+4.  按照如下样例， 重命名配置文件:
+    -   重命名 `cache.xml` 为 `cluster.xml`
+    -   重命名 `gemfire.properties` 为 `cluster.properties`
 
-5.  Start the locator in `gfsh` as follows:
+5.  在`gfsh`中启动Locator，如下所示:
 
     ``` pre
     gfsh>start locator --name=<locator_name> --enable-cluster-configuration=true --load-cluster-configuration-from-dir=true
     ```
 
-    After successful startup, the locator should report that the "Cluster configuration service is up and running." Any servers that join this cluster and have `--use-cluster-configuration` set to true will pick up these configuration files.
+    成功启动后，Locator应报告"Cluster configuration service is up and running."。 任何加入这个集群并且把`--use-cluster-configuration`设置为true的服务器将会使用这些配置文件的配置内容。
 
-**Note:**
-If you make any manual modifications to the cluster.xml or cluster.properties (or group\_name.xml or group\_name.properties) files, you must stop the locator and then restart the locator using the `--load-cluster-configuration-from-dir` parameter. Direct file modifications are not picked up iby the cluster configuration service without a locator restart.
+**注意：**
+如果对cluster.xml或cluster.properties（或group\_name.xml或group\_name.properties）文件进行任何手动修改，则必须停止Locator，然后使用`--load-cluster-configuration-from-dir`参数重启Locator。 在没有Locator重启的情况下，集群配置服务不会使用直接文件修改内容。
 
 

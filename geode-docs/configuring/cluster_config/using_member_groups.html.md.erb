@@ -1,5 +1,5 @@
 ---
-title:  Using Member Groups
+title:  使用成员组
 ---
 
 <!--
@@ -19,26 +19,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Apache Geode allows you to organize your distributed system members into logical member groups.
+Apache Geode允许您将分布式系统成员按照逻辑成员组（member group）进行组织。
 
-The use of member groups in Apache Geode is optional. The benefit of using member groups is the ability to coordinate certain operations on members based on logical group membership. For example, by defining and using member groups you can:
+Apache Geode中成员组（member group）的使用是可选的。 使用成员组（member group）的好处是能够根据逻辑组成员来协调对成员的某些操作。 例如，通过定义和使用成员组，您可以：
 
--   Alter a subset of configuration properties for a specific member or members. See [alter runtime](../../tools_modules/gfsh/command-pages/alter.html#topic_7E6B7E1B972D4F418CB45354D1089C2B) in `gfsh`.
--   Perform certain disk operations like disk-store compaction across a member group. See [Disk Store Commands](../../tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA) for a list of commands.
--   Manage specific indexes or regions across all members of a group.
--   Start and stop multi-site (WAN) services such as gateway senders and gateway receivers across a member group.
--   Deploy or undeploy JAR applications on all members in a group.
--   Execute functions on all members of a specific group.
+-   修改特定成员（单个或多个）的一部分配置属性。 请参阅中的`gfsh` [alter runtime](../../tools_modules/gfsh/command-pages/alter.html#topic_7E6B7E1B972D4F418CB45354D1089C2B) 
+-   通过成员组执行某些磁盘操作，如磁盘存储压缩。 如果需要获取命令列表， 请参阅 [Disk Store 命令](../../tools_modules/gfsh/quick_ref_commands_by_area.html#topic_1ACC91B493EE446E89EC7DBFBBAE00EA) 
+-   管理指定组中所有成员的特定索引或Region。
+-   通过成员组，启动和停止多站点（WAN）服务，例如网关发件器（gateway senders）和网关接收器（gateway receivers）。
+-   在指定组中的所有成员上部署或取消部署JAR应用程序。
+-   在指定组的所有成员上执行函数（function）。
 
-You define group names in the `groups` property of your member's `gemfire.properties` file or upon member startup in `gfsh`.
+您可以在成员的gemfire.properties文件的`groups`属性中定义组名， 或者在`gfsh`中成员启动时定义组名。
 
-**Note:**
-Any roles defined in the currently existing `roles` property will now be considered a group. If you wish to add membership roles to your distributed system, you should add them as member groups in the `groups` property. The `roles` property has been deprecated in favor of using the `groups` property.
+**注意：**
+现在`roles`属性中定义的任何角色都将被视为一个组。 如果您希望将成员资格角色添加到分布式系统中，则应将其添加为`groups`属性中的成员组。 `roles`属性已被弃用，请优先使用`groups`属性。
 
-To add a member to a group, add the name of a member group to the `gemfire.properties` file of the member prior to startup or you can start up a member in `gfsh` and pass in the `--group` argument at startup time.
+要将一个成员添加到组中，在启动之前将成员组的名称添加到成员的`gemfire.properties`文件中，或者在启动时通过`gfsh`中启动成员并传入`--group`参数。
 
-A single member can belong to more than one group.
+一个成员可以属于多个组。
 
-Member groups can also be used to organize members from either a client's perspective or from a peer member's perspective. See [Organizing Peers into Logical Member Groups](../../topologies_and_comm/p2p_configuration/configuring_peer_member_groups.html) and [Organizing Servers Into Logical Member Groups](../../topologies_and_comm/cs_configuration/configure_servers_into_logical_groups.html) for more information. On the client side, you can supply the member group name when configuring a client's connection pool. Use the &lt;pool server-group&gt; element in the client's cache.xml.
+成员组也可以用来从客户端的角度或从对等成员（peer member）的角度来进行组织。 请参阅 [按照逻辑成员组组织对等成员](../../topologies_and_comm/p2p_configuration/configuring_peer_member_groups.html) 和 [按照逻辑成员组组织服务器](../../topologies_and_comm/cs_configuration/configure_servers_into_logical_groups.html) 了解更多信息。在客户端，您可以在配置客户端连接池时提供成员组（member group）名。 使用在客户端的cache.xml中的&lt; pool server-group&gt;元素。
 
 

@@ -1,5 +1,5 @@
 ---
-title:  Cluster Configuration Files and Troubleshooting
+title:  集群配置文件及故障排除
 ---
 
 <!--
@@ -19,50 +19,51 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-When you use the cluster configuration service in Geode, you can examine the generated configuration files in the `cluster_config` directory on the locator. `gfsh` saves configuration files at the cluster-level and at the individual group-level.
+当您在Geode中使用集群配置服务时，您可以检查Locator的`cluster_config`目录中生成的配置文件。 `gfsh`按照集群级别和单个组级别保存配置文件。
 
-The following directories and configuration files are available on the locator running the cluster configuration service:
+运行集群配置服务的Locator上，有以下目录和配置文件：
 
-**Cluster-level configuration**  
-For configurations that apply to all members of a cluster, the locator creates a `cluster` subdirectory within the `cluster_config` directory (or in the cluster configuration directory when starting up the locator with the `--cluster-config-dir=value` parameter) specified. All servers receive this configuration when they are started using `gfsh`. This directory contains:
+**集群级配置**  
+对于适用于集群所有成员的配置，locator会在`cluster_config`目录（或者在启动Locator时候使用`--cluster-config-dir = value`参数指定的集群配置目录中）创建一个`cluster`子目录。 所有服务器在使用`gfsh`启动时都会收到这个配置。 这个目录包含：
 
--   `cluster.xml` -- A Geode `cache.xml` file containing configuration common to all members
--   `cluster.properties` -- a Geode ` gemfire.properties` file containing properties common to all members
--   Jar files that are intended for deployment to all members
+-   `cluster.xml` -- 一份包含所有成员相同配置的Geode `cache.xml`文件
+-   `cluster.properties` -- 一份包含所有成员相同属性的Geode `gemfire.properties`文件
+-   用于部署到所有成员的Jar文件
 
 <!-- -->
 
-**Group-level configuration**  
+**组级别配置**  
 When you specify the `--group` parameter in a `gfsh` command, (for example, `start server` or `create region`) the locator writes the configurations for each group in a subdirectory with the same name as the group. When you start a server that specifies one or more group names, the server receives both the cluster-level configurations and the configurations from all groups specified. This subdirectory contains:
+当在`gfsh`命令（例如`start server`或`create region`）中指定`--group`参数时，Locator将每个组的配置写入与组名相同的子目录中。 当您启动服务器指定一个或多个组名称时，服务器将同时收到集群级配置和所有指定组的配置。 这个子目录包含：
 
--   `<group-name>.xml` -- A Geode `cache.xml` file containing configurations common to all members of the group
--   `<group-name>.properties` -- A Geode `gemfire.properties` file containing properties common to all members of the group
--   Jar files that are intended for deployment to all members of the group
+-   `<group-name>.xml` -- Geode`cache.xml`文件，其中包含该组所有成员相同配置
+-   `<group-name>.properties` -- Geode`gemfire.properties`文件，其中包含该组所有成员相同属性
+-   用于部署到组的所有成员的Jar文件
 
 <img src="../../images_svg/cluster-group-config.svg" id="concept_ylt_2cb_y4__image_bs1_mcb_y4" class="image" />
 
-You can export a zip file that contains all artifacts of a cluster configuration. The zip file contains all of the files in the `cluster_config` (or otherwise specified) subdirectory of a locator. You can import this configuration to a new cluster. See [Exporting and Importing Cluster Configurations](export-import.html#concept_wft_dkq_34).
+您可以导出包含集群配置所有内容的zip文件。 zip文件包含locator的`cluster_config`（或其他指定的）子目录中的所有文件。 您可以将此配置导入到新的群集。 请参阅 [导出和导入集群配置](export-import.html#concept_wft_dkq_34).
 
-## Individual Configuration Files and Cluster Configuration Files
+## 单独配置文件和集群配置文件
 
-Geode applies the cluster-wide configuration files first and then group-level configurations next. If a member has its own configuration files defined (cache.xml and gemfire.properties files), those configurations are applied last. Whenever possible, use the member group-level configuration files in the cluster-configuration service to apply non-cluster-wide configurations on individual members.
+Geode首先应用集群范围的配置文件，然后应用组级配置。 如果成员有自己定义的配置文件（cache.xml和gemfire.properties文件），那么最后应用这些配置。 只要有可能，请使用集群配置服务的成员组级别配置文件对集群中的各个成员进行非群集范围的配置。
 
-## Troubleshooting Tips
+## 故障排除Tips
 
--   When you start a locator using `gfsh`, you should see the following message:
+-   当你使用`gfsh`开始一个Locator时，你应该看到以下消息：
 
     ``` pre
     Cluster configuration service is up and running.
     ```
 
-    If you do not see this message, there may be a problem with the cluster configuration service. Use the `status cluster-configuration-service` command to check the status of the cluster configuration.
+    如果您没有看到此消息，则可能是集群配置服务存在问题。 使用`status cluster-configuration-service`命令来检查集群配置的状态。
 
-    -   If the command returns RUNNING, the cluster configuration is running normally.
-    -   If the command returns WAITING, run the `status locator` command. The output of this command returns the cause of the WAITING status.
--   If a server start fails with the following exception: `ClusterConfigurationNotAvailableException`, the cluster configuration service may not be in the RUNNING state. Because the server requests the cluster configuration from the locator, which is not available, the `start server` command fails.
--   You can determine what configurations a server received from a locator by examining the server's log file. See [Logging](../../managing/logging/logging.html#concept_30DB86B12B454E168B80BB5A71268865).
--   If a `start server` command specifies a cache.xml file that conflicts with the existing cluster configuration, the server startup may fail.
--   If a `gfsh` command fails because the cluster configuration cannot be saved, the following message displays:
+    -   如果该命令返回RUNNING，则表明集群配置正常运行。
+    -   如果该命令返回WAITING，则运行`status locator`命令。 此命令的输出返回WAITING状态的原因。
+-   如果服务器启动失败，出现以下异常： `ClusterConfigurationNotAvailableException`, 集群配置服务可能不处于RUNNING状态。由于服务器从Locator请求集群配置， 而集群配置服务不可用，则会导致`start server`命令失败。
+-   您可以通过检查服务器的日志文件， 来确定服务器从Locator接收到的配置内容。 请参阅 [Logging](../../managing/logging/logging.html#concept_30DB86B12B454E168B80BB5A71268865).
+-   如果`start server`命令指定一个与现有集群配置冲突的cache.xml文件，则服务器启动可能会失败。
+-   如果由于无法保存集群配置而导致`gfsh`命令失败，将显示以下消息：
 
     ``` pre
     Failed to persist the configuration changes due to this command, 
@@ -70,6 +71,6 @@ Geode applies the cluster-wide configuration files first and then group-level co
     to determine whether Cluster configuration service is RUNNING."
     ```
 
--   There are some types of configurations that cannot be made using `gfsh`. See [gfsh Limitations](gfsh_persist.html#concept_r22_hyw_bl__section_bn3_23p_y4).
+-   有一些类型的配置不能使用`gfsh`来完成。 请参阅 [gfsh 限制](gfsh_persist.html#concept_r22_hyw_bl__section_bn3_23p_y4).
 
 
