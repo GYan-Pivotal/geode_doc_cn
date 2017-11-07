@@ -1,5 +1,5 @@
 ---
-title:  Starting Up and Shutting Down Your System
+title:  启动和关闭系统
 ---
 
 <!--
@@ -18,36 +18,34 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+确定正确的启动和关闭操作过程，并编写启动和关闭脚本。
 
-Determine the proper startup and shutdown procedures, and write your startup and shutdown scripts.
+精心设计的启动和停止系统的程序可以加速启动，并保护您的数据。 您需要启动和停止的进程，包括服务器和Locator进程以及您的其他Geode应用程序（包括客户端）。 您使用的操作步骤取决于系统的配置以及系统进程之间的依赖关系。
 
-Well-designed procedures for starting and stopping your system can speed startup and protect your data. The processes you need to start and stop include server and locator processes and your other Geode applications, including clients. The procedures you use depend in part on your system’s configuration and the dependencies between your system processes.
+使用以下准则创建启动和关闭过程和脚本。 其中一些说明使用[`gfsh`](../../tools_modules/gfsh/chapter_overview.html).
 
-Use the following guidelines to create startup and shutdown procedures and scripts. Some of these instructions use [`gfsh`](../../tools_modules/gfsh/chapter_overview.html).
+## <a id="starting_up_shutting_down__section_3D111558326D4A38BE48C17D44BB66DB" class="no-quick-link"></a>启动系统
+启动Geode系统时，您应该遵循特定顺序的操作。
 
-## <a id="starting_up_shutting_down__section_3D111558326D4A38BE48C17D44BB66DB" class="no-quick-link"></a>Starting Up Your System
+在启动客户端应用程序之前，启动服务器分布式系统。 在每个分布式系统中，请遵循以下准则来启动成员：
 
-You should follow certain order guidelines when starting your Geode system.
-
-Start server-distributed systems before you start their client applications. In each distributed system, follow these guidelines for member startup:
-
--   Start locators first. See [Running Geode Locator Processes](running_the_locator.html) for examples of locator start up commands.
--   Start cache servers before the rest of your processes unless the implementation requires that other processes be started ahead of them. See [Running Geode Server Processes](running_the_cacheserver.html) for examples of server start up commands.
--   If your distributed system uses both persistent replicated and non-persistent replicated regions, you should start up all the persistent replicated members in parallel before starting the non-persistent regions. This way, persistent members will not delay their startup for other persistent members with later data.
--   For a system that includes persistent regions, see [Start Up and Shut Down with Disk Stores](../../managing/disk_storage/starting_system_with_disk_stores.html).
--   If you are running producer processes and consumer or event listener processes, start the consumers first. This ensures the consumers and listeners do not miss any notifications or updates.
--   If you are starting up your locators and peer members all at once, you can use the `locator-wait-time` property (in seconds) upon process start up. This timeout allows peers to wait for the locators to finish starting up before attempting to join the distributed system. If a process has been configured to wait for a locator to start, it will log an info-level message
+-   优先启动Locator。 Locator启动样例，请参阅 [运行 Geode Locator进程](running_the_locator.html) 。
+-   在其他进程之前启动缓存服务器，除非具体的实现要求在这之前启动其他进程。服务器启动样例，请参阅 [启动 Geode 服务器进程](running_the_cacheserver.html) 。
+-   如果分布式系统同时使用持久复制Region和非持久复制Region，则应在启动非持久region之前启动所有持久复制region。 通过这种方式，持久化成员不会延迟启动其他持久成员以后的数据。
+-   对于包含持久性region的系统, 请参阅 [启动和关闭磁盘存储](../../managing/disk_storage/starting_system_with_disk_stores.html).
+-   如果您正在运行生产者进程（producer processes）和消费者（consumer）或事件监听器（event listener）进程，请首先启动消费者（consumer）。 这确保消费者（consumer）和监听器（listener）不会错过任何通知或更新。
+-   如果您一次启动Locator和对等成员，则可以在进程启动时使用`locator-wait-time`属性（以秒为单位）。 该超时允许对等成员在尝试加入分布式系统之前等待Locator完成启动。 如果一个进程已经配置为等待Locator启动，它将记录一个info-level消息
 
     > `GemFire startup was unable to contact a                             locator. Waiting for one to start. Configured locators are                             frodo[12345],pippin[12345]. `
 
-    The process will then sleep for a second and retry until it either connects or the number of seconds specified in `locator-wait-time` has elapsed. By default, `locator-wait-time` is set to zero meaning that a process that cannot connect to a locator upon startup will throw an exception.
+    该进程然后将休眠一秒钟，然后重试，直到它连接或`locator-wait-time`中指定的秒数已经过去。 默认情况下，`locator-wait-time`设置为0意味着启动时无法连接到Locator的进程会抛出异常。
 
-**Note:**
-You can optionally override the default timeout period for shutting down individual processes. This override setting must be specified during member startup. See [Shutting Down the System](#starting_up_shutting_down__section_mnx_4cp_cv) for details.
+**注意:**
+您可以选择覆盖关闭各个进程的默认超时期限。 这个覆盖设置必须在成员启动时指定。 详细情况， 请参阅[Shutting Down the System](#starting_up_shutting_down__section_mnx_4cp_cv) 。
 
-## <a id="starting_up_shutting_down__section_2F8ABBFCE641463C8A8721841407993D" class="no-quick-link"></a>Starting Up After Losing Data on Disk
+## <a id="starting_up_shutting_down__section_2F8ABBFCE641463C8A8721841407993D" class="no-quick-link"></a>在磁盘上丢失数据后启动
 
-This information pertains to catastrophic loss of Geode disk store files. If you lose disk store files, your next startup may hang, waiting for the lost disk stores to come back online. If your system hangs at startup, use the `gfsh` command `show missing-disk-store` to list missing disk stores and, if needed, revoke missing disk stores so your system startup can complete. You must use the Disk Store ID to revoke a disk store. These are the two commands:
+这些信息涉及Geode磁盘存储文件的灾难性损失。 如果您丢失了磁盘存储文件，那么您的下一个启动可能会挂起，等待丢失的磁盘存储再次联机。 如果系统在启动时挂起，请使用`gfsh`命令`show missing-disk-store`来列出缺少的磁盘存储，并在需要时撤销丢失的磁盘存储，以便完成系统启动。 您必须使用磁盘存储ID来吊销磁盘存储。 这是两个命令：
 
 ``` pre
 gfsh>show missing-disk-stores
@@ -59,51 +57,51 @@ Disk Store ID             |   Host    |               Directory
 gfsh>revoke missing-disk-store --id=60399215-532b-406f-b81f-9b5bd8d1b55a
 ```
 
-**Note:**
-This `gfsh` commands require that you are connected to the distributed system via a JMX Manager node.
+**注意:**
+这个`gfsh`命令要求你通过一个JMX管理器节点连接到分布式系统。
 
-## <a id="starting_up_shutting_down__section_mnx_4cp_cv" class="no-quick-link"></a>Shutting Down the System
+## <a id="starting_up_shutting_down__section_mnx_4cp_cv" class="no-quick-link"></a>关闭系统
 
 Shut down your Geode system by using either the `gfsh` `shutdown` command or by shutting down individual members one at a time.
 
-## <a id="starting_up_shutting_down__section_0EB4DDABB6A348BA83B786EEE7C84CF1" class="no-quick-link"></a>Using the shutdown Command
+## <a id="starting_up_shutting_down__section_0EB4DDABB6A348BA83B786EEE7C84CF1" class="no-quick-link"></a>使用 shutdown 命令
 
-If you are using persistent regions, (members are persisting data to disk), you should use the `gfsh` `shutdown` command to stop the running system in an orderly fashion. This command synchronizes persistent partitioned regions before shutting down, which makes the next startup of the distributed system as efficient as possible.
+如果你使用的是持久化Region（成员持久化数据到磁盘），你应该使用`gfsh`` shutdown`命令来有序地停止正在运行的系统。 此命令在关闭之前同步持久性region，这将使分布式系统的下次启动尽可能高效。
 
-If possible, all members should be running before you shut them down so synchronization can occur. Shut down the system using the following `gfsh` command:
+如果可能的话，在关闭之前所有成员都应该在运行状态，以便可以进行同步。 使用以下`gfsh`命令关闭系统：
 
 ``` pre
 gfsh>shutdown
 ```
 
-By default, the shutdown command will only shut down data nodes. If you want to shut down all nodes including locators, specify the `--include-locators=true` parameter. For example:
+默认情况下，shutdown命令只会关闭数据节点。 如果要关闭包括Locator在内的所有节点，请指定`--include-locators=true`参数。 例如：
 
 ``` pre
 gfsh>shutdown --include-locators=true
 ```
 
-This will shut down all locators one by one, shutting down the manager last.
+这将关闭所有Locator，最后关闭管理器。
 
-To shutdown all data members after a grace period, specify a time-out option (in seconds).
+要在宽限期后关闭所有数据成员，请指定一个超时选项（以秒为单位）。
 
 ``` pre
 gfsh>shutdown --time-out=60
 ```
 
-To shutdown all members including locators after a grace period, specify a time-out option (in seconds).
+要在宽限期后关闭所有成员（包括Locator），请指定超时选项（以秒为单位）。
 
 ``` pre
 gfsh>shutdown --include-locators=true --time-out=60
 ```
 
-## <a id="starting_up_shutting_down__section_A07D40BC118544D0984860A3B4A5CB29" class="no-quick-link"></a>Shutting Down System Members Individually
+## <a id="starting_up_shutting_down__section_A07D40BC118544D0984860A3B4A5CB29" class="no-quick-link"></a>单独关闭系统成员
 
-If you are not using persistent regions, you can shut down the distributed system by shutting down each member in the reverse order of their startup. (See [Starting Up Your System](#starting_up_shutting_down__section_3D111558326D4A38BE48C17D44BB66DB) for the recommended order of member startup.)
+ 如果您不使用持久性region，则可以按照与启动相反的顺序关闭每个成员来关闭分布式系统。(成员启动的建议顺序， 请参阅 [启动系统](#starting_up_shutting_down__section_3D111558326D4A38BE48C17D44BB66DB) )
 
-Shut down the distributed system members according to the type of member. For example, use the following mechanisms to shut down members:
+根据成员的类型关闭分布式系统成员。 例如，使用以下机制关闭成员：
 
--   Use the appropriate mechanism to shut down any Geode-connected client applications that are running in the distributed system.
--   Shut down any cache servers. To shut down a server, issue the following `gfsh` command:
+-   使用适当的机制， 关闭在分布式系统中运行的任何与Geode连接的客户端应用程序。
+-   关闭缓存服务器。 要关闭服务器，请执行以下`gfsh`命令：
 
     ``` pre
     gfsh>stop server --name=<...>
@@ -115,7 +113,7 @@ Shut down the distributed system members according to the type of member. For ex
     gfsh>stop server --dir=<server_working_dir>
     ```
 
--   Shut down any locators. To shut down a locator, issue the following `gfsh` command:
+-   关闭Locator。 要关闭Locator，请执行以下`gfsh`命令：
 
     ``` pre
     gfsh>stop locator --name=<...>
@@ -127,31 +125,23 @@ Shut down the distributed system members according to the type of member. For ex
     gfsh>stop locator --dir=<locator_working_dir>
     ```
 
--   Do not use the command line `kill -9` to shut down a server under
-ordinary circumstances.
-Especially on systems with a small number of members,
-using a `kill` instead of a `gfsh stop` can cause the partition detection
-mechanism to place the system in an end state that will wait forever to
-reconnect to the killed server,
-and there will be no way to restart that killed server.
-If a `kill` command appears the only way to rid the system of a server,
-then `kill` *all* the processes of the distributed system
-or use `kill -INT`, which will allow an orderly shutdown of the process. 
+- 一般情况下， 不要使用命令行`kill -9`来关闭服务器。特别是在小规模（成员数量比较少）的系统上，使用`kill`而不是`gfsh stop`可以导致分区检测机制将系统置于锁死状态，永久等待重新连接到被杀死的服务器，并且将无法重新启动被杀死的服务器。
+如果`kill`命令出现是停止服务器系统的唯一方法，那么使用`kill`分布式系统的*所有*进程 或使用`kill -INT`，这将允许有序关闭进程。
 
-## <a id="starting_up_shutting_down__section_7CF680CF8A924C57A7052AE2F975DA81" class="no-quick-link"></a>Option for System Member Shutdown Behavior
+## <a id="starting_up_shutting_down__section_7CF680CF8A924C57A7052AE2F975DA81" class="no-quick-link"></a>系统成员关闭行为的可配置项
 
-The `DISCONNECT_WAIT` command line argument sets the maximum time for each individual step in the shutdown process. If any step takes longer than the specified amount, it is forced to end. Each operation is given this grace period, so the total length of time the cache member takes to shut down depends on the number of operations and the `DISCONNECT_WAIT` setting. During the shutdown process, Geode produces messages such as:
+`DISCONNECT_WAIT` 命令行参数设置关机过程中每个单独步骤的最长时间。 如果任何步骤超过了指定的值，则强制结束。 每个操作都使用这个宽限期，所以缓存成员关闭所需的总时间取决于操作次数和`DISCONNECT_WAIT`设置。 在关机过程中，Geode会生成以下消息：
 
 ``` pre
 Disconnect listener still running
 ```
 
-The `DISCONNECT_WAIT` default is 10000 milliseconds.
+`DISCONNECT_WAIT`默认值是10000毫秒。
 
-To change it, set this system property on the Java command line used for member startup. For example:
+要更改它，请在启动成员的Java命令行上设置此系统属性。 例如：
 
 ``` pre
 gfsh>start server --J=-DDistributionManager.DISCONNECT_WAIT=<milliseconds>
 ```
 
-Each process can have different `DISCONNECT_WAIT` settings.
+每个进程可以设置不同的`DISCONNECT_WAIT`。

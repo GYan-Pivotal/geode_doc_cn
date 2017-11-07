@@ -1,5 +1,5 @@
 ---
-title:  Default File Specifications and Search Locations
+title:  默认文件规范和搜索位置
 ---
 
 <!--
@@ -18,59 +18,29 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 -->
+每个文件都有一个默认名称，一组文件搜索位置以及一个可用于覆盖默认值的系统属性。
 
-Each file has a default name, a set of file search locations, and a system property you can use to override the defaults.
+要使用默认规格，请将文件放在其目录或jar文件的顶层。 系统属性是标准文件规范，可以有绝对或相对路径名和文件名。
+**注意:**
+如果您不指定绝对文件路径和名称，搜索将检查文件的所有搜索位置。
 
-To use the default specifications, place the file at the top level of its directory or jar file. The system properties are standard file specifications that can have absolute or relative pathnames and filenames.
+|默认文件规范|搜索相对文件规范的位置|文件规范的可用属性|
+|---|----|---|
+|gemfire.properties| 1.当前目录 2.home目录 3.CLASSPATH |Java系统属性, 配置`gemfirePropertyFile`内容|
+|cache.xml|1.当前目录 2.CLASSPATH|在 `gemfire.properties`中使用`cache-xml-file`属性|
 
-**Note:**
-If you do not specify an absolute file path and name, the search examines all search locations for the file.
 
-<table>
-<colgroup>
-<col width="33%" />
-<col width="33%" />
-<col width="33%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Default File Specification</th>
-<th>Search Locations for Relative File Specifications</th>
-<th>Available Property for File Specification</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code class="ph codeph">gemfire.properties</code></td>
-<td><ol>
-<li>current directory</li>
-<li>home directory</li>
-<li>CLASSPATH</li>
-</ol></td>
-<td>As a Java system property, use <code class="ph codeph">gemfirePropertyFile</code></td>
-</tr>
-<tr class="even">
-<td><code class="ph codeph">cache.xml</code></td>
-<td><ol>
-<li>current directory</li>
-<li>CLASSPATH</li>
-</ol></td>
-<td>In <code class="ph codeph">gemfire.properties</code>, use the <code class="ph codeph">cache-xml-file</code> property</td>
-</tr>
-</tbody>
-</table>
-
-Examples of valid `gemfirePropertyFile` specifications:
+有效的`gemfirePropertyFile`规范的例子：
 
 -   `/zippy/users/jpearson/gemfiretest/gemfire.properties`
 -   `c:\gemfiretest\gemfire.prp`
 -   `myGF.properties`
 -   `test1/gfprops`
 
-For the `test1/gfprops` specification, if you launch your Geode system member from `/testDir` in a Unix file system, Geode looks for the file in this order until it finds the file or exhausts all locations:
+对于`test1/gfprops`规范，如果你在Unix文件系统中从`/ testDir`启动你的Geode系统成员，那么Geode将按照这个顺序查找文件，直到找到文件或者遍历完毕所有位置：
 
 1.  `/testDir/test1/gfprops`
 2.  `<yourHomeDir>/test1/gfprops`
-3.  under every location in your `CLASSPATH` for `test1/gfprops`
+3.  在`test1/gfprops`的`CLASSPATH`中的每个目录位置
 
 

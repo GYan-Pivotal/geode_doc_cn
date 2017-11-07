@@ -1,5 +1,5 @@
 ---
-title:  Changing the File Specifications
+title:  更改文件规范
 ---
 
 <!--
@@ -19,12 +19,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-You can change all file specifications in the `gemfire.properties` file and at the command line.
+您可以在`gemfire.properties`文件和命令行中更改所有文件规范。
 
-**Note:**
-Geode applications can use the API to pass `java.lang.System properties` to the distributed system connection. This changes file specifications made at the command line and in the `gemfire.properties`. You can verify an application’s property settings in the configuration information logged at application startup. The configuration is listed when the `gemfire.properties` `log-level` is set to `config` or lower.
+**注意:**
+Geode应用程序可以使用API将`java.lang.System properties`传递给分布式系统连接。 这会改变在命令行和`gemfire.properties`中制定的文件规范。 您可以使用应用程序启动时记录的配置信息，来验证应用程序的属性设置。 当`gemfire.properties`中`log-level`设置为`config`或者更低时，配置会（在Log中）逐项列出。
 
-This invocation of the application, `testApplication.TestApp1`, provides non-default specifications for both the `cache.xml` and `gemfire.properties`:
+这个对应用程序`testApplication.TestApp1`的调用为`cache.xml`和`gemfire.properties`提供了非默认的规范：
 
 ``` pre
 java -Dgemfire.cache-xml-file=
@@ -33,7 +33,7 @@ java -Dgemfire.cache-xml-file=
 testApplication.TestApp1
 ```
 
-The gfsh start server command can use the same specifications:
+gfsh start server命令可以使用相同的规范：
 
 ``` pre
 gfsh>start server
@@ -41,12 +41,12 @@ gfsh>start server
 -J-DgemfirePropertyFile=defaultConfigs/gemfire.properties
 ```
 
-You can also change the specifications for the `cache.xml` file inside the `gemfire.properties` file.
+您还可以更改`gemfire.properties`文件内`cache.xml`文件的规范。
 
-**Note:**
-Specifications in `gemfire.properties` files cannot use environment variables.
+**注意:**
+`gemfire.properties`文件中的规范不能使用环境变量。
 
-Example `gemfire.properties` file with non-default `cache.xml` specification:
+示例：具有非默认的`cache.xml`规范的`gemfire.properties`文件：
 
 ``` pre
 #Tue May 09 17:53:54 PDT 2006

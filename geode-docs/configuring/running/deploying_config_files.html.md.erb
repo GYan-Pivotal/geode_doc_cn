@@ -1,5 +1,5 @@
 ---
-title:  Deploying Configuration Files without the Cluster Configuration Service
+title:  不通过集群配置服务部署配置文件
 ---
 
 <!--
@@ -19,27 +19,26 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-You can deploy your Apache Geode configuration files in your system directory structure or in jar files. You determine how you want to deploy your configuration files and set them up accordingly.
+您可以将Apache Geode配置文件部署到系统目录结构或jar文件中。 您可以指定如何部署配置文件并进行相关设置。
 
-**Note:**
-If you use the cluster configuration service to create and manage your Apache Geode cluster configuration, the procedures described in this section are not needed because Geode automatically manages the distribution of the configuration files and jar files to members of the cluster. See [Overview of the Cluster Configuration Service](../cluster_config/gfsh_persist.html).
+**注意：** 
+如果使用集群配置服务来创建和管理Apache Geode集群配置，则不需要本节中描述的过程，因为Geode会自动管理，把配置文件和jar文件分发到集群成员。请参阅 [集群配置服务概述](../cluster_config/gfsh_persist.html).
 
-You can use the procedures described in this section to distribute configurations that are member-specific, or for situations where you do not want to use the cluster configuration service.
+您可以使用本节中介绍的过程来分发某个成员特定的配置，或者用于不想使用集群配置服务的情况。
 
--   **[Main Steps to Deploying Configuration Files](../../configuring/running/deploy_config_files_intro.html)**
+-   **[部署配置文件的主要步骤](../../configuring/running/deploy_config_files_intro.html)**
 
-    These are the basic steps for deploying configuration files, with related detail in sections that follow.
+    这些是部署配置文件的基本步骤，在后面的章节中将介绍相关的细节。
+-   **[默认文件内容和搜索位置](../../configuring/running/default_file_specs.html)**
 
--   **[Default File Specifications and Search Locations](../../configuring/running/default_file_specs.html)**
+    每个文件都有一个默认名称，一组文件搜索位置以及一个可用于覆盖默认值的系统属性。
+    
+-   **[改变文件内容](../../configuring/running/change_file_spec.html)**
 
-    Each file has a default name, a set of file search locations, and a system property you can use to override the defaults.
+    您可以在`gemfire.properties`文件和命令行中更改所有文件内容。
 
--   **[Changing the File Specifications](../../configuring/running/change_file_spec.html)**
+-   **[通过JARs文件格式部署配置文件](../../configuring/running/deploying_config_jar_files.html)**
 
-    You can change all file specifications in the `gemfire.properties` file and at the command line.
-
--   **[Deploying Configuration Files in JAR Files](../../configuring/running/deploying_config_jar_files.html)**
-
-    This section provides a procedure and an example for deploying configuration files in JAR files.
+    本节提供了在JAR文件中部署配置文件的过程和示例。
 
 

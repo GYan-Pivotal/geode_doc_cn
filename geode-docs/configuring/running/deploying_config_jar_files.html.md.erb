@@ -1,5 +1,5 @@
 ---
-title:  Deploying Configuration Files in JAR Files
+title:  通过JARs文件格式部署配置文件
 ---
 
 <!--
@@ -19,19 +19,19 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-This section provides a procedure and an example for deploying configuration files in JAR files.
+本节提供了在JAR文件中部署配置文件的过程和示例。
 
-**Procedure**
+**操作流程**
 
-1.  Jar the files.
-2.  Set the Apache Geode system properties to point to the files as they reside in the jar file.
-3.  Include the jar file in your `CLASSPATH.`
-4.  Verify the jar file copies are the only ones visible to the application at runtime. Geode searches the `CLASSPATH` after searching other locations, so the files cannot be available in the other search areas.
-5.  Start your application. The configuration file is loaded from the jar file.
+1.  做成Jar文件
+2.  将Apache Geode系统属性设置为指向保存在jar文件中的文件。
+3.  将jar文件包含在你的`CLASSPATH`中
+4.  验证jar文件副本是运行时应用程序的唯一可见副本。 Geode在搜索其他位置后搜索`CLASSPATH`，所以这些文件在其他搜索区域应该是不可用的。
+5.  启动你的应用。 配置文件从jar文件中加载。
 
-**Example of Deploying a Configuration JAR**
+**部署配置JAR的示例**
 
-The following example deploys the cache configuration file, `myCache.xml`, in `my.jar`. The following displays the contents of `my.jar`:
+以下示例，展示如何在`my.jar`中部署缓存配置文件`myCache.xml`。 以下显示`my.jar`的内容：
 
 ``` pre
 % jar -tf my.jar 
@@ -41,12 +41,12 @@ myConfig/
 myConfig/myCache.xml
 ```
 
-In this example, you would perform the following steps to deploy the configuration jar file:
+在本例中，您将执行以下步骤来部署配置jar文件：
 
-1.  Set the system property, `gemfire.cache-xml-file`, to `myConfig/myCache.xml`
-2.  Set your `CLASSPATH` to include `my.jar`.
-3.  Verify there is no file named `myCache.xml` in `./myConfig/myCache.xml`, the current directory location of the file
+1.  将系统属性`gemfire.cache-xml-file`设置为`myConfig / myCache.xml`
+2.  设置你的`CLASSPATH`包含`my.jar`。
+3.  确认文件的当前目录位置`./myConfig/myCache.xml`中没有名为`myCache.xml`的文件。
 
-When you start your application, the configuration file is loaded from the jar file.
+当你启动你的应用程序时，配置文件是从jar文件中加载的。
 
 

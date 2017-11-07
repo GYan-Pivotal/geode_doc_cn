@@ -1,5 +1,5 @@
 ---
-title:  Main Steps to Deploying Configuration Files
+title:  部署配置文件的主要步骤
 ---
 
 <!--
@@ -19,18 +19,16 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-These are the basic steps for deploying configuration files, with related detail in sections that follow.
+这些是部署配置文件的基本步骤，在后面的章节中将介绍相关的细节。
 
-1.  Determine which configuration files you need for your installation.
-2.  Place the files in your directories or jar files.
-3.  For any file with a non-default name or location, provide the file specification in the system properties file and/or in the member `CLASSPATH.`
+1.  确定您的安装需要哪些配置文件。
+2.  将文件放在您的目录或jar文件中。
+3.  对于任何非默认名称或非默认位置的文件，请在系统属性文件和/或成员`CLASSPATH`中提供文件说明。
 
-## <a id="concept_337B365782E44951B73F33E1E17AB07B__section_53C98F9DB1584E3BABFA315CDF254A92" class="no-quick-link"></a>Geode Configuration Files
+## <a id="concept_337B365782E44951B73F33E1E17AB07B__section_53C98F9DB1584E3BABFA315CDF254A92" class="no-quick-link"></a>Geode 配置文件
 
--   `gemfire.properties`. Contains the settings required by members of a distributed system. These settings include licensing, system member discovery, communication parameters, logging, and statistics. 
-See the [Geode Properties Reference](../../reference/topics/gemfire_properties.html).
--   **`gfsecurity.properties`**. An optional separate file that contains security-related (`security-*`) settings that are otherwise defined in `gemfire.properties`. Placing these member properties into a separate file allows you to restrict user access to those specific settings. 
-See the [Geode Properties Reference](../../reference/topics/gemfire_properties.html).
--   `cache.xml`. Declarative cache configuration file. This file contains XML declarations for cache, region, and region entry configuration. You also use it to configure disk stores, database login credentials, server and remote site location information, and socket information. See [cache.xml](../../reference/topics/chapter_overview_cache_xml.html#cache_xml).
+-   `gemfire.properties`：包含分布式系统成员所需的设置。 这些设置包括licensing，系统成员发现，通信参数，日志记录和统计信息。 请参阅[Geode属性参考](../../reference/topics/gemfire_properties.html)。
+-   **`gfsecurity.properties`**：一个可选的独立文件，包含安全相关的（`security- *`）设置，这些设置在`gemfire.properties`中定义。 将这些成员属性放在单独的文件中，可以限制用户对这些特定设置的访问。请参阅[Geode属性参考](../../reference/topics/gemfire_properties.html)。
+-   `cache.xml`：声明式缓存配置文件。 该文件包含缓存，region 和region条目（region entry）配置的XML声明。 您还可以使用它来配置磁盘存储，数据库登录凭据，服务器和远程站点位置信息以及套接字（socket）信息。请参阅[cache.xml](../../reference/topics/chapter_overview_cache_xml.html#cache_xml)。
 
 

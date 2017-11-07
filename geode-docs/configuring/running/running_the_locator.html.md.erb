@@ -1,5 +1,5 @@
 ---
-title:  Running Geode Locator Processes
+title:  运行 Geode Locator进程
 ---
 
 <!--
@@ -19,56 +19,55 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-The locator is a Geode process that tells new, connecting members where running members are located and provides load balancing for server use.
+Locator是一个Geode进程，它告诉新连接成员目前运行成员的位置，并为服务器使用提供负载平衡。
 
 <a id="running_the_locator__section_E9C98E8756524552BEA9B0CA49A2069E"></a>
-You can run locators as peer locators, server locators, or both:
+您可以将Locator作为对等Locator或服务器Locator， 也可以两者都是来运行：
 
--   Peer locators give joining members connection information to members already running in the locator's distributed system.
--   Server locators give clients connection information to servers running in the locator's distributed system. Server locators also monitor server load and send clients to the least-loaded servers.
+-   对等Locator把新加入成员的连接信息，发送给已经在Locator的分布式系统中已经运行的成员。
+-   服务器Locator为客户端提供连接到Locator的分布式系统中运行的服务器的连接信息。 服务器Locator还监视服务器负载并将客户端发送到负载最少的服务器。
 
-By default, locators run as peer and server locators.
+默认情况下，Locator同时作为对等和服务器Locator运行。
 
-You can run the locator standalone or embedded within another Geode process. Running your locators standalone provides the highest reliability and availability of the locator service as a whole.
+您可以单独运行Locator或嵌入另一个Geode进程中。 独立运行Locator可以把Locator服务作为一个整体， 提供最好的可靠性和可用性。
 
-## <a id="running_the_locator__section_0733348268AF4D5F8851B999A6A36C53" class="no-quick-link"></a>Locator Configuration and Log Files
+## <a id="running_the_locator__section_0733348268AF4D5F8851B999A6A36C53" class="no-quick-link"></a>Locator 配置和日志文件
 
-Locator configuration and log files have the following properties:
+Locator配置和日志文件具有以下属性：
 
--   When you start a standalone locator using `gfsh`, `gfsh` will automatically load the required JAR files (`$GEMFIRE/lib/locator-dependencies.jar`) into the CLASSPATH of the JVM process. If you start a standalone locator using the `LocatorLauncher` API, you must specify `$GEMFIRE/lib/locator-dependencies.jar` inside the command used to launch the locator process. For more information on CLASSPATH settings in Geode, see [CLASSPATH Settings for Geode Processes](../../getting_started/setup_classpath.html). You can modify the CLASSPATH by specifying the `--classpath` parameter.
--   Locators are members of the distributed system just like any other member. In terms of `mcast-port` and `locators` configuration, a locator should be configured in the same manner as a server. Therefore, if there are two other locators in the distributed system, each locator should reference the other locators (just like a server member would). For example:
+-   当你使用`gfsh`启动一个独立的Locator时，`gfsh`会将所需的JAR文件(`$GEMFIRE/lib/locator-dependencies.jar`)自动加载到JVM进程的CLASSPATH中。 如果使用`LocatorLauncher` API启动独立Locator，则必须在用于启动Locator进程的命令中指定`$GEMFIRE/lib/locator-dependencies.jar`。有关Geode中CLASSPATH设置的更多信息, 请参阅 [Geode 进程的CLASSPATH设置](../../getting_started/setup_classpath.html)。 您可以通过指定`--classpath`参数来修改CLASSPATH。
+-   Locator和任何其他成员一样，也是分布式系统的成员。 根据`mcast-port`和`locators`的配置，Locator的配置应该和服务器一样。 因此，如果分布式系统中还有其他两个Locator，则每个定位器都应引用其他Locator（就像服务器成员一样）。 例如：
 
     ``` pre
     gfsh> start locator --name=locator1 --port=9009 --mcast-port=0 \
     --locators='host1[9001],host2[9003]'
     ```
 
--   You can configure locators within the `gemfire.properties` file or by specifying start-up parameters on the command line. If you are specifying the locator's configuration in a properties file, locators require the same `gemfire.properties` settings as other members of the distributed system and the same `gfsecurity.properties` settings if you are using a separate, restricted access security settings file.
+-   您也可以在`gemfire.properties`文件中配置Locator，或者通过在命令行上指定启动参数。 如果要在属性文件中指定Locator的配置，则Locator需要与分布式系统的其他成员相同的`gemfire.properties`设置。 如果您使用单独的受限访问安全设置文件，也需要相同的`gfsecurity.properties`设置。
 
-    For example, to configure both locators and a multicast port in `gemfire.properties:`
+    例如，要在`gemfire.properties：`中配置Locator和multicast端口
 
     ``` pre
     locators=host1[9001],host2[9003]
     mcast-port=0
     ```
 
--   There is no cache configuration specific to locators.
--   For logging output, the locator creates a log file in its current working directory. Log file output defaults to `locator_name.log` in the locator's working directory. If you restart a locator with a previously used locator name, the existing *locator\_name*.log file is automatically renamed for you (for example, `locator1-01-01.log` or `locator1-02-01.log`). You can modify the level of logging details in this file by specifying a level in the `--log-level` argument when starting up the locator.
--   By default, a locator will start in a subdirectory (named after the locator) under the directory where `gfsh` is executed. This subdirectory is considered the current working directory. You can also specify a different working directory when starting the locator in `gfsh`.
--   By default, a locator that has been shutdown and disconnected due to a network partition event or member unresponsiveness will restart itself and automatically try to reconnect to the existing distributed system. When a locator is in the reconnecting state, it provides no discovery services for the distributed system. See [Handling Forced Cache Disconnection Using Autoreconnect](../../managing/autoreconnect/member-reconnect.html) for more details.
+-   There is no cache configuration specific to locators.没有特定于Locator的缓存配置。
+-   对于日志记录输出，Locator在其当前工作目录中创建一个日志文件。 日志文件输出默认为Locator工作目录中的locator_name.log。 如果使用先前使用的Locator名称重新启动Locator，则会自动为您更名现有*locator\_name*.log文件（例如，“locator1-01-01.log”或“locator1-02-01.log”）。 您可以通过在启动Locator时，在`--log-level`参数中指定级别来修改此文件中日志的详细程度。
+-   默认情况下，Locator将从执行`gfsh`的目录下的一个子目录（以locator命名）开始。 这个子目录被认为是当前的工作目录。 你也可以在`gfsh`中启动Locator时指定一个不同的工作目录。
+-   默认情况下，由于网络分区事件或成员无响应而关闭和断开的Locator将自行重新启动，并自动尝试重新连接到现有的分布式系统。 当Locator处于重新连接状态时，它不会为分布式系统提供发现服务。详细情况， 请参阅 [使用Autoreconnect处理强制缓存断开连接](../../managing/autoreconnect/member-reconnect.html)。 
 
-## <a id="running_the_locator__section_wst_ykb_rr" class="no-quick-link"></a>Locators and the Cluster Configuration Service
+## <a id="running_the_locator__section_wst_ykb_rr" class="no-quick-link"></a> Locator和集群配置服务
 
-Locators use the cluster configuration service to save configurations that apply to all cluster members, or to members of a specified group. The configurations are saved in the Locator's directory and are propagated to all locators in a distributed system. When you start servers using `gfsh`, the servers receive the group-level and cluster-level configurations from the locators.
+Locator使用集群配置服务来保存适用于所有集群成员或指定组成员的配置。 配置保存在Locator的目录中，并传播到分布式系统中的所有Locator。 当您使用`gfsh`启动服务器时，服务器会从Locator接收组级别和集群级别的配置。
+请参阅 [集群配置服务概述](../cluster_config/gfsh_persist.html).
 
-See [Overview of the Cluster Configuration Service](../cluster_config/gfsh_persist.html).
+## <a id="running_the_locator__section_FF25228E30624E04ACA8784A2183D585" class="no-quick-link"></a>启动Locator
 
-## <a id="running_the_locator__section_FF25228E30624E04ACA8784A2183D585" class="no-quick-link"></a>Start the Locator
+使用以下操作规范来启动Locator：
 
-Use the following guidelines to start the locator:
-
--   **Standalone locator**. Start a standalone locator in one of these ways:
-    -   Use the `gfsh` command-line utility. See [`gfsh`](../../tools_modules/gfsh/chapter_overview.html) for more information on using `gfsh`. For example:
+-   **独立locator**. 使用以下其中一种方法启动独立定位器：
+    -   使用`gfsh`命令行工具。 更多关于`gfsh`使用信息， 请参阅[`gfsh`](../../tools_modules/gfsh/chapter_overview.html)。例如:
 
         ``` pre
         gfsh>start locator --name=locator1
@@ -76,7 +75,7 @@ Use the following guidelines to start the locator:
         gfsh> start locator --name=locator2 --bind-address=192.0.2.0 --port=13489
         ```
 
-    -   Start the locator using the `main` method in the `org.apache.geode.distributed.LocatorLauncher` class and the Java executable. For example:
+    -   使用`org.apache.geode.distributed.LocatorLauncher`类和Java可执行文件中的`main`方法启动locator。 例如：
 
         ``` pre
         working/directory/of/Locator/process$java -server \
@@ -85,26 +84,26 @@ Use the following guidelines to start the locator:
           --redirect-output
         ```
 
-        Specifically, you use the `LocatorLauncher` class API to run an embedded Locator service in Java application processes that you have created. The directory where you execute the java command becomes the working directory for the locator process.
+        具体而言，您可以使用`LocatorLauncher`类API在您创建的Java应用程序进程中运行嵌入式Locator服务。 执行java命令的目录将成为Locator进程的工作目录。
 
-    -   When starting up multiple locators, do not start them up in parallel (in other words, simultaneously). As a best practice, you should wait approximately 30 seconds for the first locator to complete startup before starting any other locators. To check the successful startup of a locator, check for locator log files. To view the uptime of a running locator, you can use the `gfsh status locator` command.
+    -   启动多个Locator时，不要并行启动（换句话说，同时启动）。作为最佳实践，在启动任何其他Locator之前，您应该等待大约30秒钟，让第一个Locator完成启动。 要检查Locator的成功启动，请检查Locator日志文件。 要查看正在运行的Locator的正常运行时间，可以使用`gfsh status locator`命令。
 
--   **Embedded (colocated) locator**. Manage a colocated locator at member startup or through the APIs:
-    -   Use the `gemfire.properties` `start-locator` setting to start the locator automatically inside your Geode member. See the [Reference](../../reference/book_intro.html#reference). The locator stops automatically when the member exits. The property has the following syntax:
+-   **嵌入式 (colocated) locator**. 在成员启动时或通过API管理colocated locator:
+    -  使用`gemfire.properties``start-locator`设置在Geode成员中自动启动Locator。请参阅 [Reference](../../reference/book_intro.html#reference)。当该成员退出时，Locator自动停止。 该属性按照以下语法声明:
 
         ``` pre
         #gemfire.properties
         start-locator=[address]port[,server={true|false},peer={true|false}]
         ```
 
-        Example:
+        例如:
 
         ``` pre
         #gemfire.properties
         start-locator=13489
         ```
 
-    -   Use `org.apache.geode.distributed.LocatorLauncher` API to start the locator inside your code. Use the `LocatorLauncher.Builder` class to construct an instance of the `LocatorLauncher`, and then use the `start()` method to start a Locator service embedded in your Java application process. The other methods in the `LocatorLauncher` class provide status information about the locator and allow you to stop the locator.
+    -   使用 `org.apache.geode.distributed.LocatorLauncher` API 在你的代码中启动Locator。使用`LocatorLauncher.Builder`类构造`LocatorLauncher`的实例，然后使用`start（）`方法启动嵌入在Java应用程序进程中的Locator服务。 LocatorLauncher类中的其他方法提供有关Locator的状态信息，并允许您停止Locator。
 
         ``` pre
         import org.apache.geode.distributed.LocatorLauncher;
@@ -124,7 +123,7 @@ Use the following guidelines to start the locator:
             }
         ```
 
-        Here's another example that embeds the locator within an application, starts it and then checks the status of the locator before allowing other members to access it:
+        这里有另外一个例子，在应用程序中嵌入locator，之后进行启动，然后在允许其他成员访问locator之前检查locator的状态：
 
         ``` pre
         package example;
@@ -168,7 +167,7 @@ Use the following guidelines to start the locator:
         }
         ```
 
-        Then to execute the application, you would run:
+        然后执行应用程序，你可以运行:
 
         ``` pre
         /working/directory/of/MyApplication$ java \
@@ -176,37 +175,37 @@ Use the following guidelines to start the locator:
          example.MyApplication Locator1 11235
         ```
 
-        The directory where you execute the java command becomes the working directory for the locator process.
+        执行java命令的目录将成为Locator进程的工作目录。
 
-## <a id="running_the_locator__section_F58F229D5C7048E9915E0EC470F9A923" class="no-quick-link"></a>Check Locator Status
+## <a id="running_the_locator__section_F58F229D5C7048E9915E0EC470F9A923" class="no-quick-link"></a>检查 Locator 状态
 
-If you are connected to the distributed system in `gfsh`, you can check the status of a running Locator by providing the Locator name. For example:
+如果您通过`gfsh`连接到分布式系统，则可以通过提供Locator名称来检查正在运行的Locator的状态。 例如：
 
 ``` pre
 gfsh>status locator --name=locator1
 ```
 
-If you are not connected to a distributed system, you can check the status of a local Locator by providing the process ID, the Locator's hostname and port, or the Locator's current working directory. For example:
+如果您没有连接到分布式系统，则可以通过提供进程ID，Locator的主机名和端口或Locator的当前工作目录来检查本地Locator的状态。 例如：
 
 ``` pre
 gfsh>status locator --pid=2986
 ```
 
-or
+或者
 
 ``` pre
 gfsh>status locator --host=host1 --port=1035
 ```
 
-or
+或者
 
 ``` pre
 $ gfsh status locator --dir=<locator_working_directory>
 ```
 
-where &lt;*locator\_working\_directory*&gt; corresponds to the local working directory where the locator is running.
+其中&lt;*locator\_working\_directory*&gt;对应于Locator正在运行的本地工作目录。
 
-If successful, the command returns the following information (with the JVM arguments that were provided at startup):
+如果成功，该命令将返回以下信息（使用在启动时提供的JVM参数）：
 
 ``` pre
 $ gfsh status locator --dir=locator1
@@ -223,33 +222,33 @@ Class-Path: /home/user/Pivotal_GemFire_800_b48319_Linux/lib/locator-dependencies
 Cluster configuration service is up and running.
 ```
 
-## <a id="running_the_locator__section_0E4DDED6AB784B0CAFBAD538B227F487" class="no-quick-link"></a>Stop the Locator
+## <a id="running_the_locator__section_0E4DDED6AB784B0CAFBAD538B227F487" class="no-quick-link"></a>停止Locator
 
-If you are connected to the distributed system in `gfsh`, you can stop a running locator by providing the locator name. For example:
+如果您在`gfsh`中连接到分布式系统，则可以通过提供Locator名称来停止正在运行的Locator。 例如：
 
 ``` pre
 gfsh>stop locator --name=locator1
 ```
 
-If you are not connected to a distributed system, you can stop a local locator by specifying the locator's process ID or the locator's current working directory. For example:
+如果您没有连接到分布式系统，则可以通过指定Locator的进程ID或Locator的当前工作目录来停止本地Locator。 例如：
 
 ``` pre
 gfsh>stop locator --pid=2986
 ```
 
-or
+或
 
 ``` pre
 gfsh>stop locator --dir=<locator_working_directory>
 ```
 
-where &lt;*locator\_working\_directory*&gt; corresponds to the local working directory where the locator is running.
+其中&lt;*locator\_working\_directory*&gt;对应于Locator正在运行的本地工作目录。
 
-## Locators and Multi-Site (WAN) Deployments
+## Locators 和 Multi-Site (WAN) 部署
 
-If you use a multi-site (WAN) configuration, you can connect a locator to a remote site when starting the locator.
+如果使用Multi-Site (WAN)配置，则可以在启动Locator时将Locator连接到远程站点。
 
-To connect a new locator process to a remote locator in a WAN configuration, specify the following at startup:
+要将新Locator进程连接到WAN配置中的远程Locator，请在启动时指定以下内容：
 
 ``` pre
 gfsh> start locator --name=locator1 --port=9009 --mcast-port=0 \
