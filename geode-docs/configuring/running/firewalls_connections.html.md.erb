@@ -19,17 +19,17 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Be aware of possible connection problems that can result from running a firewall on your machine.
+如果在您的机器上运行防火墙的话， 请注意可能会导致连接问题。
 
-Apache Geode is a network-centric distributed system, so if you have a firewall running on your machine it could cause connection problems. For example, your connections may fail if your firewall places restrictions on inbound or outbound permissions for Java-based sockets. You may need to modify your firewall configuration to permit traffic to Java applications running on your machine. The specific configuration depends on the firewall you are using.
+Apache Geode是一个以网络为中心的分布式系统，所以如果你的机器上运行着防火墙，可能会导致连接问题。 例如，如果防火墙对基于Java的Socket的入站或出站权限设置了限制，则连接可能会失败。 您可能需要修改您的防火墙配置，以允许您的计算机上运行的Java应用程序的数据传输。 具体配置取决于您使用的防火墙。
 
-As one example, firewalls may close connections to Geode due to timeout settings. If a firewall senses no activity in a certain time period, it may close a connection and open a new connection when activity resumes, which can cause some confusion about which connections you have.
+例如，由于超时设置，防火墙可能会关闭与Geode的连接。 如果防火墙在某个时间段内没有感知到任何活动，则可能会关闭连接，并在活动恢复时打开一个新的连接，这会导致某些连接的混乱。
 
-For more information on how Geode client and servers connect, see the following topics:
+关于Geode客户端和服务器端如何连接的更多信息， 请参阅一下内容：
 
--   [How Client/Server Connections Work](../../topologies_and_comm/topology_concepts/how_the_pool_manages_connections.html#how_the_pool_manages_connections)
--   [Socket Communication](../../managing/monitor_tune/socket_communication.html)
--   [Controlling Socket Use](../../managing/monitor_tune/performance_controls_controlling_socket_use.html#perf)
--   [Setting Socket Buffer Sizes](../../managing/monitor_tune/socket_communication_setting_socket_buffer_sizes.html)
+-   [Client/Server 的连接如何工作](../../topologies_and_comm/topology_concepts/how_the_pool_manages_connections.html#how_the_pool_manages_connections)
+-   [Socket通信](../../managing/monitor_tune/socket_communication.html)
+-   [控制 Socket 使用](../../managing/monitor_tune/performance_controls_controlling_socket_use.html#perf)
+-   [设置Socket Buffer Sizes](../../managing/monitor_tune/socket_communication_setting_socket_buffer_sizes.html)
 
 

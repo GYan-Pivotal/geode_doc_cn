@@ -1,5 +1,5 @@
 ---
-title:  Managing System Output Files
+title:  管理系统输出文件
 ---
 
 <!--
@@ -19,15 +19,15 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Geode output files are optional and can become quite large. Work with your system administrator to determine where to place them to avoid interfering with other system activities.
+Geode的输出文件是可选的， 而且可能变成非常大。 与您的系统管理协调决定哪里来放日志，以避免影响其他系统活动。
 
 <a id="managing_output_files__section_F0CEA4299D274801B9AB700C074F178F"></a>
-Geode includes several types of optional output files as described below.
+Geode包含下面详细说明的集中可选输出文件。
 
--   **Log Files**. Comprehensive logging messages to help you confirm system configuration and to debug problems in configuration and code. Configure log file behavior in the `gemfire.properties` file. See [Logging](../../managing/logging/logging.html#concept_30DB86B12B454E168B80BB5A71268865).
+-   **日志文件（Log Files）**：全面日志信息可以帮会组您来确认系统配置和从配置和代码中分析问题。通过`gemfire.properties`文件配置日志行为。 请参阅[Logging](../../managing/logging/logging.html#concept_30DB86B12B454E168B80BB5A71268865)。
 
--   **Statistics Archive Files**. Standard statistics for caching and distribution activities, which you can archive on disk. Configure statistics collection and archival in the `gemfire.properties`, `archive-disk-space-limit` and `archive-file-size-limit`. See the [Reference](../../reference/book_intro.html#reference).
+-   **统计信息档案（Statistics Archive Files）**：缓存操作和其他分布行为的标准的统计信息， 您可以保存到磁盘上。 配置统计信息手机和归档的内容， 在`gemfire.properties`文件中的`archive-disk-space-limit` 和 `archive-file-size-limit`. 请参阅 [Reference](../../reference/book_intro.html#reference).
 
--   **Disk Store Files**. Hold persistent and overflow data from the cache. You can configure regions to persist data to disk for backup purposes or overflow to disk to control memory use. The subscription queues that servers use to send events to clients can be overflowed to disk. Gateway sender queues overflow to disk automatically and can be persisted for high availability. Configure these through the `cache.xml`. See [Disk Storage](../../managing/disk_storage/chapter_overview.html).
+-   **磁盘存储文件（Disk Store Files）**：保存缓存中的持久化（persistent）和溢出（overflow）数据。你可以配置Region，如果是有备份需要的话， 可以把数据持久化到磁盘， 如果是有控制内存使用需要的话，可以把数据溢出到磁盘。用于在把服务器上的事件发送给客户端的订阅队列（subscription queues）， 也可以溢出到磁盘上。 Gateway sender的队列自动溢出到磁盘， 为了高可用的要求也可以持久化到磁盘上。这些都可以通过`cache.xml`进行配置。请参阅[磁盘存储](../../managing/disk_storage/chapter_overview.html).
 
 
