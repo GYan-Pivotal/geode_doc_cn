@@ -1,5 +1,5 @@
 ---
-title:  Local and Remote Membership and Caching
+title:  本地和远程成员与缓存
 ---
 
 <!--
@@ -19,11 +19,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-For many Apache Geode discussions, you need to understand the difference between local and remote membership and caching.
+对于许多Apache Geode讨论，您需要了解本地和远程成员与缓存之间的区别。
 
 <a id="local_vs_remote_member_and_cache__section_5535DC4C94494B6A9B106DA39F63A439"></a>
-Discussions of Geode membership and caching activities often differentiate between local and remote. Local caching always refers to the central member under discussion, if there is one such obvious member, and remote refers to other members. If there is no clear, single local member, the discussion assigns names to the members to differentiate. Operations, data, configuration, and so forth that are "local to member Q" are running or resident inside the member Q process. Operations, data, configuration, and so on, that are "remote to member Q" are running or resident inside some other member.
 
-The local cache is the cache belonging to the local member. All other caches are remote, whether in other members of the same distributed system or in different distributed systems.
+关于Geode成员和缓存活动的讨论中通常区分本地和远程。 本地缓存总是指正在讨论的中心成员，如果有这样一个明显的成员，而远程是指其他成员。 如果没有明确的单一的本地成员，则讨论将通过分配名称给成员来区分。 成员Q本地的操作，数据，配置等在成员Q过程中运行或驻留。 运行，数据，配置等等，“远程Q”运行或驻留在某个其他成员内部。
+
+本地缓存是属于本地成员的缓存。 所有其他缓存都是远程的，无论是在同一分布式系统的其他成员，还是在不同的分布式系统中。
 
 

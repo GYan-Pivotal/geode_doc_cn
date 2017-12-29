@@ -1,5 +1,5 @@
 ---
-title:  Setting Properties
+title:  设置属性
 ---
 
 <!--
@@ -19,39 +19,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Geode provides a default distributed system configuration for out-of-the-box systems. To use non-default configurations and to fine-tune your member communication, you can use a mix of various options to customize your distributed system configuration.
+Geode为开箱即用（out-of-the-box）的系统提供了默认的分布式系统配置。 要使用非默认配置并优化您的成员通信，可以使用各种选项的组合来自定义分布式系统配置。
 
 <a id="setting_distributed_properties__section_67EBCC53EB174B108DA7271E2CD2B76C"></a>
-Geode properties are used to join a distributed system and configure system member behavior. Configure your Geode properties through the `gemfire.properties` file, the Java API, or command-line input. Generally, you store all your properties in the `gemfire.properties` file, but you may need to provide properties through other means, for example, to pass in security properties for a username and password that you have received from keyboard input.
+Geode属性用于加入分布式系统和配置系统成员行为。 可以通过`gemfire.properties`文件，Java API或命令行输入配置您的Geode属性。 通常，您将所有属性存储在`gemfire.properties`文件中，但是您可能需要通过其他方式提供属性，例如，传入从键盘输入中收到的用户名和密码的安全属性。
 
-**Note:**
-Check with your Geode system administrator before changing properties through the API, including the `gemfire.properties` and `gfsecurity.properties` settings. The system administrator may need to set properties at the command line or in configuration files. Any change made through the API overrides those other settings.
+**注意:**
+在通过API更改属性（包括`gemfire.properties`和`gfsecurity.properties`设置）之前，请咨询您的Geode系统管理员。 系统管理员可能需要在命令行或配置文件中设置属性。 通过API进行的任何更改都会覆盖其他设置。
 
-**Note:**
-The product `defaultConfigs` directory has a sample `gemfire.properties` file with all default settings.
+**注意:**
+产品目录中的`defaultConfigs`有一个`gemfire.properties`样例文件，其中包含所有默认设置。
 
-Set distributed system properties by any combination of the following. The system looks for the settings in the order listed:
+通过以下任意组合来设置分布式系统属性。 系统按列出的顺序查找设置：
 
-1.  `java.lang.System` property setting. Usually set at the command line. For applications, set these in your code or at the command line.
+1.  `java.lang.System` 属性设置。 通常在命令行设置。 对于应用程序，请在您的代码或命令行中进行设置。
 
-    Naming: Specify these properties in the format `gemfire.property-name`, where `property-name` matches the name in the `gemfire.properties` file. To set the gemfire property file name, use `gemfirePropertyFile` by itself
-    -   In the API, set the `System` properties before the cache creation call. Example:
-
+    命名：以`gemfire.property-name`格式指定的这些属性，其中`property-name`与`gemfire.properties`文件中的名称匹配。 要设置gemfire属性文件名，请使用`gemfirePropertyFile`
+        
+    -   在API中，在创建缓存之前设置`System`属性。 例如：
+   
         ``` pre
         System.setProperty("gemfirePropertyFile", "gfTest");
         System.setProperty("gemfire.mcast-port", "10999");
 
         Cache cache = new CacheFactory().create();
         ```
-    -   At the `java` command line, pass in `System` properties using the `-D` switch. Example:
+    -   在`java`命令行中，使用`-D`开关传入`System`属性。 例：
 
         ``` pre
         java -DgemfirePropertyFile=gfTest -Dgemfire.mcast-port=10999 test.Program
         ```
-2.  Entry in a `Properties` object.
+2.  从`Properties` 对象中输入
 
-    Naming: Specify these properties using the names in the `gemfire.properties` file. To set the gemfire property file name, use `gemfirePropertyFile`.
-    -   In the API, create a `Properties` object and pass it to the cache create method. Example:
+    命名：使用`gemfire.properties`文件中的名称来指定这些属性。 要设置gemfire属性文件名，请使用`gemfirePropertyFile`。
+    -   在API中，创建一个“属性”对象并将其传递给缓存创建方法。 例如：
 
         ``` pre
         Properties properties= new Properties();
@@ -60,15 +61,15 @@ Set distributed system properties by any combination of the following. The syste
         ClientCache userCache = 
             new ClientCacheFactory(properties).create();
         ```
-    -   For the cache server, pass the properties files on the `gfsh` command line as command-line options. Example:
+    -   对于缓存服务器，请将`gfsh`命令行上的属性文件作为命令行选项传递。 例如：
 
         ``` pre
         gfsh>start server --name=server_name --mcast-port=10338 --properties-file=serverConfig/gemfire.properties --security-properties-file=gfsecurity.properties
         ```
 
-        See [Running Geode Server Processes](../../configuring/running/running_the_cacheserver.html) for more information on running cache servers.
-
-3.  Entry in a `gemfire.properties` file. See [Deploying Configuration Files without the Cluster Configuration Service](../../configuring/running/deploying_config_files.html). Example:
+        关于运行缓存服务器的更多信息， 请参阅 [运行Geode Server进程](../../configuring/running/running_the_cacheserver.html)
+        
+3.  在`gemfire.properties`文件中输入。 请参阅 [不通过集群配置服务部署配置文件](../../configuring/running/deploying_config_files.html). 例如:
 
     ``` pre
     cache-xml-file=cache.xml
@@ -76,7 +77,7 @@ Set distributed system properties by any combination of the following. The syste
     disable-tcp=false
     ```
 
-4.  Default value. The default values are defined within the API for 
-`org.apache.geode.distributed.ConfigurationProperties`.
+4.  默认值。 默认值是在`org.apache.geode.distributed.ConfigurationProperties`的API中为其定义的
+.
 
 

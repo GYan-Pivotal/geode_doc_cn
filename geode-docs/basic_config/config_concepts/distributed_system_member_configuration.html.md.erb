@@ -1,5 +1,5 @@
 ---
-title:  Distributed System Members
+title:  分布式系统成员
 ---
 
 <!--
@@ -19,39 +19,40 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-Distributed system members are programs that connect to a Geode distributed system. You configure members to belong to a single distributed system, and you can optionally configure them to be clients or servers to members in other distributed systems, and to communicate with other distributed systems.
+分布式系统成员是连接到Geode分布式系统的程序。 您可以将成员配置为属于单个分布式系统，并且可以选择将其做为客户机或服务器配置到其他分布式系统中的成员，并与其他分布式系统通信。
 
-## <a id="distributed_system_member_configuration__section_326B2609B67E4FBE9BF2074C3B211E50" class="no-quick-link"></a>Member Overview
+## <a id="distributed_system_member_configuration__section_326B2609B67E4FBE9BF2074C3B211E50" class="no-quick-link"></a>成员概览
 
-Distributed system members (or simply "members") connect to the Geode system when they create the Geode data cache. The members' distributed system is configured through Geode properties. See [gemfire.properties and gfsecurity.properties (Geode Properties)](../../reference/topics/gemfire_properties.html). Geode properties specify all necessary information for system member startup, initialization, and communication.
+分布式系统成员（或简称为“成员”）在创建Geode数据缓存时连接到Geode系统。 成员的分布式系统通过Geode属性进行配置。请参阅 [gemfire.properties 和 gfsecurity.properties (Geode Properties)](../../reference/topics/gemfire_properties.html)。 Geode属性指定了系统成员启动，初始化和通信的所有必要信息。
 
-**Note:**
-You cannot change a member's properties while the member is connected to the distributed system.
+**注意：**
+成员连接到分布式系统时，不能更改成员的属性。
 
-Use the properties to define:
+使用属性来定义：
 
--   How to find and communicate with other system members
--   How to perform logging and statistics activities
--   Which persistent configuration or `cache.xml` file to use for cache and data region initialization
--   Other options, including event conflation, how to handle network loss, and security settings
+- 如何查找和与其他系统成员通信
+- 如何执行日志记录和统计活动
+- 用于缓存和数据region初始化的持久配置或cache.xml文件
+- 其他选项，包括事件压缩，如何处理网络丢失以及安全设置
 
-## <a id="distributed_system_member_configuration__section_E755E9E4A31149C980561D617A99A002" class="no-quick-link"></a>Distributed System Membership and System Topologies
+## <a id="distributed_system_member_configuration__section_E755E9E4A31149C980561D617A99A002" class="no-quick-link"></a>分布式系统成员和系统拓扑
 
-Every Geode process is a member of a distributed system, even if the distributed system is defined as standalone, with just one member. You can run an individual distributed system in isolation or you can combine systems for vertical and horizontal scaling. See [Topology and Communication General Concepts](../../topologies_and_comm/topology_concepts/chapter_overview.html).
+每个Geode进程都是分布式系统的成员，即使分布式系统被定义为独立的，只有一个成员。 您可以单独运行单独的分布式系统，也可以组合系统进行垂直和水平延展。请参阅 [拓扑架构和通信的基本概念](../../topologies_and_comm/topology_concepts/chapter_overview.html).
 
--   **Peer-to-Peer Distributed Systems**. Members that define the same member discovery properties belong to the same distributed system and are peers to one another.
--   **Client/Server Installations**. The client/server topology uses relationships that you configure between members of multiple distributed systems. You configure some or all of the peers in one distributed system to act as cache servers to clients connecting from outside the system. Each server can host many client processes, managing cache access for all in an efficient, vertically hierarchical cache configuration. You configure the client applications to connect to the servers, using a client cache configuration. Clients run as members of standalone Geode distributed systems, with no peers, so all data updates and requests go to the servers.
+-   **对等式Peer-to-Peer 分布式系统**. 定义相同成员发现属性的成员属于同一个分布式系统，并且是彼此的对等成员。
+-   **Client/Server 安装**. 客户端/服务器（client/server）拓扑使用您在多个分布式系统的成员之间配置的关系。 您可以将一个分布式系统中的部分或全部对等设备配置为从系统外部连接的客户端的缓存服务器。 每个服务器可以承载多个客户端进程，以高效的，垂直分层的缓存配置来管理所有缓存访问。 通过使用客户端缓存配置，您可以将客户端应用程序连接到服务器。 客户端作为独立的Geode分布式系统的成员运行，没有对等点，因此所有的数据更新和请求都发送到服务器。
 
-## **Multi-site Installations**
+## **多站点安装**
 
-The multi-site topology uses relationships that you configure between members of multiple distributed systems. Through this configuration, you loosely couple two or more distributed systems for automated data distribution. This is usually done for sites at geographically separate locations. You configure a subset of peers in each distributed system site with gateway senders and/or gateway receivers to manage events that are distributed between the sites.
+多站点拓扑使用您在多个分布式系统的成员之间配置的关系。通过这种配置，您可以松耦合两个或多个分布式系统，以进行自动数据分发。这通常是在地理位置不同的地点进行的。您可以在每个分布式系统站点中配置对等的子集作为网关发送器和/或网关接收器，以管理在站点之间分发的事件。
 
-In the context of a single distributed system, unless otherwise specified, "remote member" refers to
-another member of the same distributed system. In client/server and multi-site installations, "remote"
-generally refers to members in other distributed systems. For example, all servers are "remote" to the
-clients that connect to them. Each client runs standalone, with connections only to the server tier,
-so all servers and their other clients are "remote" to the individual client. All gateway receivers
-are "remote" to the gateway senders that connect to them from other distributed systems, and to those
-gateway senders' peers.
+在单个分布式系统的情况下，除非另有说明，“远程成员”是指
+同一个分布式系统的另一个成员。
+
+在客户端/服务器和多站点安装中，“远程”
+一般是指其他分布式系统中的成员。例如，所有服务器都是“远程”的
+连接到它们的客户端。每个客户端独立运行，仅与服务器层连接，
+所以所有的服务器和其他客户端对于单个客户端是“远程的”。所有网关接收器
+对于从其他分布式系统连接到它们的网关发送器是“远程的”，并且对于网关发送器的的对等节点也是。
 
 
